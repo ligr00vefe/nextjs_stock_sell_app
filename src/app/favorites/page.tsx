@@ -1,21 +1,43 @@
-import React from 'react'
-import getFavorites, { IStocksParams } from '@/app/actions/getFavorites'
-import getCurrentUser from '@/app/actions/getCurrentUser';
+import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { Favorite, User } from '@prisma/client';
+import axios from 'axios';
 
 export interface IFavoritesPageProps {
   stocks: { data: Favorite[] };
   currentUser: User | null;
 }
 
-const FavoritesPage = async ({ stocks, currentUser }:IFavoritesPageProps) => {
+const FavoritesPage = async () => {
 
+  const [stocks, setStocks] = useState<{ data: Favorite[] }>({ data: [] });
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   // console.log('stocks: ', stocks);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('/pages/api/favorites'); // API 엔드포인트 호출
+        setStocks(response.data.stocks);
+        setCurrentUser(response.data.currentUser);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  
   if (!stocks || stocks.data.length === 0) {
     return (
       <EmptyState title="즐겨찾기된 종목이 없습니다." subtitle="종목을 즐겨찾기 해 주세요." />
@@ -50,24 +72,5 @@ const FavoritesPage = async ({ stocks, currentUser }:IFavoritesPageProps) => {
     </div>
   )
 }
-
-export const getServerSideProps: GetServerSideProps<IFavoritesPageProps> = async (context: GetServerSidePropsContext) => {
-  const searchParams: IStocksParams = {
-    symbol: context.query.symbol as string,
-    company: context.query.company as string,
-    currency: context.query.currency as string,
-    price: typeof context.query.price === 'string' ? Number(context.query.price) : null,
-    desired_selling_price: typeof context.query.desired_selling_price === 'string' ? Number(context.query.desired_selling_price) : null,
-    userId: context.query.userId as string,
-    stockId: context.query.stockId as string
-  }
-
-  // 데이터를 가져옵니다.
-  const stocks = await getFavorites(searchParams);
-  const currentUser = await getCurrentUser();
-
-  // 페이지에 props로 데이터를 전달합니다.
-  return { props: { stocks, currentUser } };
-};
 
 export default FavoritesPage

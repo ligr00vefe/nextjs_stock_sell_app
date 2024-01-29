@@ -1,8 +1,8 @@
-import React from 'react';
-import FavoritesPage, { IFavoritesPageProps } from '@/app/favorites/page';
-import getFavorites, { IStocksParams } from '@/app/actions/getFavorites';
+import getFavorites, { IStocksParams } from '@/app/actions/getFavorites'
 import getCurrentUser from '@/app/actions/getCurrentUser';
-import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { IFavoritesPageProps } from '@/app/favorites/page';
 
 export const getServerSideProps: GetServerSideProps<IFavoritesPageProps> = async (context: GetServerSidePropsContext) => {
   const searchParams: IStocksParams = {
@@ -22,9 +22,3 @@ export const getServerSideProps: GetServerSideProps<IFavoritesPageProps> = async
   // 페이지에 props로 데이터를 전달합니다.
   return { props: { stocks, currentUser } };
 };
-
-const Favorites = (props: IFavoritesPageProps) => {
-  return <FavoritesPage {...props} />;
-};
-
-export default Favorites;
