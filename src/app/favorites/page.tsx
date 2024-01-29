@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
@@ -10,7 +12,7 @@ export interface IFavoritesPageProps {
   currentUser: User | null;
 }
 
-const FavoritesPage = async () => {
+const FavoritesPage = () => {
 
   const [stocks, setStocks] = useState<{ data: Favorite[] }>({ data: [] });
   const [currentUser, setCurrentUser] = useState<User | null>(null);
