@@ -5,8 +5,8 @@ export interface IStocksParams {
   symbol?: string;
   company?: string;
   currency?: string;
-  price: number;
-  desired_selling_price: number;
+  price: number | null;
+  desired_selling_price: number | null;
   userId?: string;
   stockId?: string;
 }
