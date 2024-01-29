@@ -53,7 +53,7 @@ const StocksPage = async ({ searchParams }: IStocksProps) => {
           </thead>
           <tbody>
             {stocks.data.map((stock) => (
-              <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={true} hasSellingPrice={false} readonly={false} />           
+              <StockTableRow stock={{ ...stock, stockId: stock.id }} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={true} hasSellingPrice={false} readonly={false} />           
             ))}
           </tbody>          
         </table>
