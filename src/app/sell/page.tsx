@@ -7,10 +7,10 @@ import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
 import getSellStocks from '@/app/actions/getSellStocks';
-import { User } from '@prisma/client';
+import { Favorite, User } from '@prisma/client';
 
 interface StocksData {
-  data: IStocksParams[];
+  data: Favorite[];
   totalItems: number;
 }
 
