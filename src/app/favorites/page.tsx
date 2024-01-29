@@ -9,7 +9,7 @@ import { Favorite, User } from '@prisma/client';
 
 interface IFavoritesPageProps {
   stocks: { data: Favorite[] };
-  currentUser: User;
+  currentUser: User | null;
 }
 
 const FavoritesPage = async ({ stocks, currentUser }:IFavoritesPageProps) => {
@@ -51,7 +51,7 @@ const FavoritesPage = async ({ stocks, currentUser }:IFavoritesPageProps) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps<IFavoritesPageProps> = async (context: GetServerSidePropsContext) => {
   const searchParams: IStocksParams = {
     symbol: context.query.symbol as string,
     company: context.query.company as string,
