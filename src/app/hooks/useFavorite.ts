@@ -3,7 +3,7 @@
 import { User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { ChangeEvent, useMemo } from "react";
 import { toast } from 'react-toastify'
 import { IStocksParams } from "@/app/actions/getFavorites";
 
@@ -32,7 +32,7 @@ const useFavorite = ({
 
   }, [currentUser, stockId]);
 
-  const toggleFavorite = async (e: React.MouseEvent<HTMLDivElement>) => {
+  const toggleFavorite = async (e: ChangeEvent<HTMLInputElement>, checked: boolean) => {
     // event 더블링 방지
     e.stopPropagation();
 
