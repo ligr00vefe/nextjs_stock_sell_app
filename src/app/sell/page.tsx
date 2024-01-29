@@ -1,19 +1,38 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { IStocksParams } from '@/app/actions/getFavorites'
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
 import getSellStocks from '@/app/actions/getSellStocks';
+import { User } from '@prisma/client';
 
-interface IStocksProps {
-  searchParams: IStocksParams
+interface StocksData {
+  data: IStocksParams[];
+  totalItems: number;
 }
 
-const SellListPage = async ({ searchParams }: IStocksProps) => {
+const SellListPage = () => {
 
-  const stocks = await getSellStocks(searchParams);
-  const currentUser = await getCurrentUser();
+  const [stocks, setStocks] = useState<StocksData | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const searchParams: IStocksParams = {
+        price: 0,
+        desired_selling_price: 0
+      };
+      const fetchedStocks = await getSellStocks(searchParams);
+      setStocks(fetchedStocks);
+      const fetchedCurrentUser = await getCurrentUser();
+      setCurrentUser(fetchedCurrentUser);
+    };
+
+    fetchData();
+  }, []);
 
   if (!stocks || stocks.data.length === 0) {
     return (
