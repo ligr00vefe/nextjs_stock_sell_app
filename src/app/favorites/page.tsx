@@ -4,15 +4,15 @@ import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { Favorite, User } from '@prisma/client';
 
-interface IStocksProps {
-  searchParams: IStocksParams
+interface IFavoritesPageProps {
+  stocks: { data: Favorite[] };
+  currentUser: User;
 }
 
-const FavoritesPage = async ({ searchParams }: IStocksProps) => {
-
-  const stocks = await getFavorites(searchParams);
-  const currentUser = await getCurrentUser();
+const FavoritesPage = async ({ stocks, currentUser }:IFavoritesPageProps) => {
 
   // console.log('stocks: ', stocks);
 
@@ -50,5 +50,24 @@ const FavoritesPage = async ({ searchParams }: IStocksProps) => {
     </div>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const searchParams: IStocksParams = {
+    symbol: context.query.symbol as string,
+    company: context.query.company as string,
+    currency: context.query.currency as string,
+    price: typeof context.query.price === 'string' ? Number(context.query.price) : null,
+    desired_selling_price: typeof context.query.desired_selling_price === 'string' ? Number(context.query.desired_selling_price) : null,
+    userId: context.query.userId as string,
+    stockId: context.query.stockId as string
+  }
+
+  // 데이터를 가져옵니다.
+  const stocks = await getFavorites(searchParams);
+  const currentUser = await getCurrentUser();
+
+  // 페이지에 props로 데이터를 전달합니다.
+  return { props: { stocks, currentUser } };
+};
 
 export default FavoritesPage
