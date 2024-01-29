@@ -7,7 +7,6 @@ export interface IStocksParams {
   price: number;
   desired_selling_price: number;
   userId?: string;
-  stockId?: string;
 }
 
 export default async function getStocks(params: IStocksParams) {

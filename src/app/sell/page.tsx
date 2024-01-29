@@ -1,5 +1,5 @@
 import React from 'react'
-import { IStocksParams } from '@/app/actions/getStocks'
+import { IStocksParams } from '@/app/actions/getFavorites'
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
 

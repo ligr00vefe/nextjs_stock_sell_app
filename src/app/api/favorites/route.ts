@@ -25,7 +25,7 @@ export async function GET(
   // 주식이 이미 존재하는지 확인
   const existingFavorite = await prisma.favorite.findFirst({
     where: {
-      symbol: symbol,
+      symbol: symbol as string,
       userId: currentUser.id
     }
   });

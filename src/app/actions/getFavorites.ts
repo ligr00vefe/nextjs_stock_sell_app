@@ -1,6 +1,15 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import { IStocksParams } from "@/app/actions/getStocks";
+
+export interface IStocksParams {
+  symbol?: string;
+  company?: string;
+  currency?: string;
+  price: number;
+  desired_selling_price: number;
+  userId?: string;
+  stockId?: string;
+}
 
 export default async function getFavorites(params: IStocksParams) {
 

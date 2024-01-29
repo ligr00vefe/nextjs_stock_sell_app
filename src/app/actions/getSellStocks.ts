@@ -1,6 +1,6 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import { IStocksParams } from "@/app/actions/getStocks";
+import { IStocksParams } from "@/app/actions/getFavorites";
 
 export default async function getSellStocks(params: IStocksParams) {
 
