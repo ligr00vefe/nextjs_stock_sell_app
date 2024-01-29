@@ -21,7 +21,7 @@ const FavoritesPage = async () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/pages/api/favorites'); // API 엔드포인트 호출
+        const response = await axios.get('/pages/api/favoritesAPI'); // API 엔드포인트 호출
         setStocks(response.data.stocks);
         setCurrentUser(response.data.currentUser);
       } catch (error) {
@@ -37,7 +37,7 @@ const FavoritesPage = async () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  
+
   if (!stocks || stocks.data.length === 0) {
     return (
       <EmptyState title="즐겨찾기된 종목이 없습니다." subtitle="종목을 즐겨찾기 해 주세요." />
