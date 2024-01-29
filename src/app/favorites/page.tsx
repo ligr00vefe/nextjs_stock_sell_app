@@ -7,7 +7,7 @@ import StockTableRow from '@/components/stocks/StockTableRow';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { Favorite, User } from '@prisma/client';
 
-interface IFavoritesPageProps {
+export interface IFavoritesPageProps {
   stocks: { data: Favorite[] };
   currentUser: User | null;
 }
