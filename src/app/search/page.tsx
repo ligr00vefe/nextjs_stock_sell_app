@@ -89,7 +89,10 @@ const SearchPage: React.FC = () => {
       if (searchTerm !== null && searchTerm !== '') {
         try {
           const results = await fetchStockData(searchTerm);
-          setSearchResults(results);
+          
+          if (results !== undefined) {
+            setSearchResults(results);
+          }
           // console.log('results: ', results);
         } catch (error) {
           console.error('Error fetching stock data:', error);
