@@ -44,25 +44,23 @@ const SearchPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (router.isReady) {
-      const fetchAndSetData = async () => {
-        const searchTerm = router.query.q as string;
-        if (searchTerm && searchTerm !== '') {
-          try {
-            const results = await fetchStockData(searchTerm);
-            if (results !== undefined) {
-              setSearchResults(results);
-            }
-          } catch (error) {
-            console.error('Error fetching stock data:', error);
-          }
+    const fetchAndSetData = async () => {
+      if (!router.isReady) return; // 라우터가 준비되지 않았을 때는 종료
+      const searchTerm = router.query.q as string;
+      if (searchTerm && searchTerm !== '') {
+        try {
+          const results = await fetchStockData(searchTerm);
+          setSearchResults(results || []); // 결과가 없을 때 빈 배열로 설정
+        } catch (error) {
+          console.error('Error fetching stock data:', error);
+          // 오류가 발생했을 때 적절한 처리를 수행합니다.
         }
-      };
-    
-      fetchAndSetData();
-    }
-  }, [router.isReady, router.query.q]);
+      }
+    };
   
+    fetchAndSetData();
+  }, [router.isReady, router.query.q]);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
