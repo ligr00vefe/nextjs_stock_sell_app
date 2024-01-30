@@ -81,22 +81,23 @@ const SearchPage: React.FC = () => {
   }
 
   useEffect(() => {
-    const fetchAndSetData = async () => {
-      const searchTerm = router.query.q as string;
-  
-      if (searchTerm && searchTerm !== '') {
-        try {
-          const results = await fetchStockData(searchTerm);
-          if (results !== undefined) {
-            setSearchResults(results);
+    if (typeof window !== "undefined") {
+      const fetchAndSetData = async () => {
+        const searchTerm = router.query.q as string;
+        if (searchTerm && searchTerm !== '') {
+          try {
+            const results = await fetchStockData(searchTerm);
+            if (results !== undefined) {
+              setSearchResults(results);
+            }
+          } catch (error) {
+            console.error('Error fetching stock data:', error);
           }
-        } catch (error) {
-          console.error('Error fetching stock data:', error);
         }
-      }
-    };
-  
-    fetchAndSetData();
+      };
+    
+      fetchAndSetData();
+    }
   }, [router.query.q]);
 
   if (searchResults.length > 0) {
