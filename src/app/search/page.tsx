@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import fetchStockData from '@/app/actions/getStockData';
 import axios from 'axios';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -82,26 +82,22 @@ const SearchPage: React.FC = () => {
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const searchTerm = urlParams.get('q');
-
-      if (searchTerm !== null && searchTerm !== '') {
+      const searchTerm = router.query.q as string;
+  
+      if (searchTerm && searchTerm !== '') {
         try {
           const results = await fetchStockData(searchTerm);
           if (results !== undefined) {
             setSearchResults(results);
           }
-          // console.log('results: ', results);
         } catch (error) {
           console.error('Error fetching stock data:', error);
         }
       }
     };
-
-    // 최초 로드 및 URL 변경 시에 fetchAndSetData 호출
+  
     fetchAndSetData();
-  }, [window.location.search]);
+  }, [router.query.q]);
 
   if (searchResults.length > 0) {
     return (
