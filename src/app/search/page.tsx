@@ -71,7 +71,7 @@ const SearchPage: React.FC = () => {
       })  
 
       // 즐겨찾기 반영을 위해 router refresh
-      router.refresh();
+      window.location.reload();
 
       toast.success('성공했습니다.');
 
