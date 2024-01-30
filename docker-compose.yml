@@ -4,9 +4,9 @@ services:
         image: postgres:latest
         restart: always
         ports:
-            - "6543:5432"
+            - "5433:5432"
         environment:
-            POSTGRES_USER: "postgres.yieggerbzykytbwvmxzk"
-            POSTGRES_PASSWORD: "tnvkqpdltm2231"
+            POSTGRES_USER: "stock-sell-app"
+            POSTGRES_PASSWORD: "password123"
         volumes:
             - ./data:/var/lib/postgresql/data
