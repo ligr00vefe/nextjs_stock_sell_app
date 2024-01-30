@@ -43,6 +43,26 @@ const SearchPage: React.FC = () => {
     }
   });
 
+  useEffect(() => {
+    if (router.isReady) {
+      const fetchAndSetData = async () => {
+        const searchTerm = router.query.q as string;
+        if (searchTerm && searchTerm !== '') {
+          try {
+            const results = await fetchStockData(searchTerm);
+            if (results !== undefined) {
+              setSearchResults(results);
+            }
+          } catch (error) {
+            console.error('Error fetching stock data:', error);
+          }
+        }
+      };
+    
+      fetchAndSetData();
+    }
+  }, [router.isReady, router.query.q]);
+  
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
@@ -76,26 +96,6 @@ const SearchPage: React.FC = () => {
       toast.error('문제가 발생했습니다.');
     }
   }
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const fetchAndSetData = async () => {
-        const searchTerm = router.query.q as string;
-        if (searchTerm && searchTerm !== '') {
-          try {
-            const results = await fetchStockData(searchTerm);
-            if (results !== undefined) {
-              setSearchResults(results);
-            }
-          } catch (error) {
-            console.error('Error fetching stock data:', error);
-          }
-        }
-      };
-    
-      fetchAndSetData();
-    }
-  }, [router.query.q]);
 
   if (searchResults.length > 0) {
     return (
