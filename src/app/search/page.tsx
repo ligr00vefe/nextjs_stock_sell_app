@@ -61,7 +61,7 @@ const SearchPage: React.FC = () => {
       axios.post(`/api/stocks`, requestData)
       .then((response) => {
         router.push(`/stocks`);
-        reset();
+        router.reload();
       })
       .catch((err) => {
         console.error(err);
@@ -69,12 +69,6 @@ const SearchPage: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       })  
-
-      // 즐겨찾기 반영을 위해 router refresh
-      // 클라이언트 측에서만 페이지 새로 고침
-      if (typeof window !== "undefined") {
-        window.location.reload();
-      }
 
       toast.success('성공했습니다.');
 
