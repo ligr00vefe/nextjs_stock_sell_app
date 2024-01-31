@@ -10,7 +10,7 @@ import { getSession } from 'next-auth/react';
 
 interface NavbarProps {
   // 유저가 로그인 되어서 props로 user 데이터를 받아왔을 때는 Prisma/client에서 제공하는 기본 User 안의 타입을 쓰고 로그인이 안되었을 때는 타입 null 
-  currentUser?: Session | null; 
+  currentUser?: User | null; 
 }
 
 const Navbar = ( { currentUser }: NavbarProps ) => {
