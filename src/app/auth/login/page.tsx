@@ -31,7 +31,7 @@ const LoginPage = () => {
       router.push('/'); // 로그인 페이지 경로
     }
 
-    console.log('currentUser', currentUser);      
+    console.log('loginPage_currentUser', currentUser);      
   }
 
   useEffect(() => { 

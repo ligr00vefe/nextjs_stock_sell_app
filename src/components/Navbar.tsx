@@ -33,7 +33,7 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
     } 
 
     // console.log('router', router);
-    // console.log('currentUser', currentUser);
+    console.log('Navbar_currentUser', currentUser);      
     // console.log('Current Path:', currentPath);
 
   }, [currentUser, currentPath, router]);
