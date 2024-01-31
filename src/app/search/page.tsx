@@ -48,8 +48,8 @@ const SearchPage: React.FC = () => {
       ...selectedStock
     };
 
-    console.log('requestData', requestData);
-    
+    // console.log('requestData', requestData);
+
     try {
       const response = await axios.post(`/api/stocks`, requestData);
       router.push(`/stocks`);

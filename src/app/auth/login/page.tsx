@@ -27,11 +27,11 @@ const LoginPage = () => {
     const currentUser = await getSession();
 
     // 로그인이 되었다면 메인 페이지로 이동
-    if (currentUser) {
+    if (currentUser && currentUser !== null) {
       router.push('/'); // 로그인 페이지 경로
     }
 
-    // console.log('currentUser', currentUser);      
+    console.log('currentUser', currentUser);      
   }
 
   useEffect(() => { 
