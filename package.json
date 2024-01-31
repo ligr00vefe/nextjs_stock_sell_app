@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prisma:generate": "prisma generate",
     "netlify-deploy": "prisma generate && next build"
   },
   "dependencies": {
