@@ -15,6 +15,8 @@ const SearchPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [selectedStock, setSelectedStock] = useState<any>({
     symbol: '',
     company: '',
@@ -59,12 +61,13 @@ const SearchPage: React.FC = () => {
   }
 
   useEffect(() => {
-    const fetchAndSetData = async () => {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const searchTerm = urlParams.get('q');
+    const query = new URLSearchParams(window.location.search).get('q');
+    setSearchTerm(query || '');
+  }, []);
 
-      if (searchTerm && searchTerm !== '') {
+  useEffect(() => {
+    const fetchAndSetData = async () => {
+      if (searchTerm !== '') {
         try {
           const results = await fetchStockData(searchTerm);
           if (results) {
@@ -77,7 +80,7 @@ const SearchPage: React.FC = () => {
     };
 
     fetchAndSetData();
-  }, [window.location.search]);
+  }, [searchTerm]);
 
   return (
     <div className='flex items-start justify-center w-full h-full py-20'>
