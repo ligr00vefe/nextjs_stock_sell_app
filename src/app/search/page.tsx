@@ -1,38 +1,22 @@
-// Search.tsx
-'use client'
-
 import React, { useEffect, useState } from 'react';
 import fetchStockData from '@/app/actions/getStockData';
 import axios from 'axios';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { Button, ButtonBase, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();  
 
-  const [symbolValue, setSymbolValue] = useState('');
-  const [companyValue, setCompanyValue] = useState('');
-  const [currencyValue, setCurrencyValue] = useState('');
-
   const {
-    // useForm에서 제공해주는 property
     register,
     handleSubmit,
-    setValue,
-    watch,
-    formState: {
-      errors,
-    },
     reset,
-  } = useForm<FieldValues>({
+  } = useForm({
     defaultValues: {
       symbol: '',
       company: '',
@@ -45,15 +29,14 @@ const SearchPage: React.FC = () => {
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      if (!router.isReady) return; // 라우터가 준비되지 않았을 때는 종료
+      if (!router.isReady) return;
       const searchTerm = router.query.q as string;
       if (searchTerm && searchTerm !== '') {
         try {
           const results = await fetchStockData(searchTerm);
-          setSearchResults(results || []); // 결과가 없을 때 빈 배열로 설정
+          setSearchResults(results || []);
         } catch (error) {
           console.error('Error fetching stock data:', error);
-          // 오류가 발생했을 때 적절한 처리를 수행합니다.
         }
       }
     };
@@ -61,49 +44,30 @@ const SearchPage: React.FC = () => {
     fetchAndSetData();
   }, [router.isReady, router.query.q]);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit = async (data) => {
     setIsLoading(true);
 
-    const requestData = {
-      ...data,
-      symbol: symbolValue,
-      company: companyValue,
-      currency: currencyValue
-
-    };
-
-    // console.log('requestData:', requestData);    
-  
     try {       
-      // 관심종목을 추가하려는 경우 post로 axios 전송
-      axios.post(`/api/stocks`, requestData)
-      .then((response) => {
-        router.push(`/stocks`);
-        router.reload();
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      })  
-
+      await axios.post(`/api/stocks`, data);
+      router.push(`/stocks`);
       toast.success('성공했습니다.');
-
     } catch (error) {
       toast.error('문제가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
+      reset();
     }
   }
 
   if (searchResults.length > 0) {
     return (
-      <div className='flex items-start justify-center w-[100vw] h-[100vh] py-[150px]'>
-        <table className="w-[70vw] max-w-[1000px] border-[2px] border-black border-collapse border-spacing-0 p-10">
+      <div className='flex flex-col items-center justify-start w-[100vw] h-[100vh] py-[150px]'>
+        <table className="w-[80vw] max-w-[1400px] border-[2px] border-black border-collapse border-spacing-0 p-10">
           <colgroup>
             <col className='w-[15%]' />
             <col className='' />
+            <col className='w-[10%]' />
             <col className='w-[12%]' />
-            <col className='w-[15%]' />
           </colgroup>
           <thead>
             <tr>
@@ -111,8 +75,6 @@ const SearchPage: React.FC = () => {
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목명</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>통화</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>관심종목 등록</th>
-              {/* <th className='p-2 border-[1px] border-black'>즐겨찾기</th> */}
-
             </tr>           
           </thead>
           <tbody>
@@ -129,11 +91,6 @@ const SearchPage: React.FC = () => {
                       color="primary" 
                       startIcon={<AddBoxIcon />}
                       className="bg-blue-500"
-                      onClick={() => {
-                        setSymbolValue(stock.symbol);
-                        setCompanyValue(stock.name);
-                        setCurrencyValue(stock.currency);
-                      }}
                     >
                       등록
                     </Button>             
@@ -157,4 +114,3 @@ const SearchPage: React.FC = () => {
 }
 
 export default SearchPage;
-
