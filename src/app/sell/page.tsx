@@ -22,8 +22,13 @@ const SellListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const searchParams: IStocksParams = {
+        symbol: '',
+        company: '',
+        currency: '',
         price: 0,
-        desired_selling_price: 0
+        desired_selling_price: 0,
+        userId: '',
+        stockId: ''
       };
       const fetchedStocks = await getSellStocks(searchParams);
       setStocks(fetchedStocks);
