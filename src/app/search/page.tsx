@@ -7,6 +7,7 @@ import axios from 'axios';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 
@@ -47,6 +48,8 @@ const SearchPage: React.FC = () => {
       ...selectedStock
     };
 
+    console.log('requestData', requestData);
+    
     try {
       const response = await axios.post(`/api/stocks`, requestData);
       router.push(`/stocks`);
@@ -105,6 +108,8 @@ const SearchPage: React.FC = () => {
                     type="submit" 
                     variant="contained" 
                     color="primary" 
+                    startIcon={<AddBoxIcon />}
+                    className="bg-blue-500"
                     onClick={() => {
                       setSelectedStock({
                         symbol: stock.symbol,
