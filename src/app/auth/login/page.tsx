@@ -36,7 +36,7 @@ const LoginPage = () => {
 
   useEffect(() => { 
     loginCheck();
-  });
+  }, [router]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (body) => {
     setIsLoading(true);

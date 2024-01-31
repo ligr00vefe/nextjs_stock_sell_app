@@ -18,11 +18,34 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  // const [currentPath, setCurrentPath] = useState('');
+  const [currentPath, setCurrentPath] = useState('');
 
   const handleMenu = () => {
     setMenu(!menu);
   }
+
+  useEffect(() => {
+    // 페이지 로드 시에도 경로 업데이트
+    // setCurrentPath(window.location.pathname);
+
+    const checkUserStatus = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+      console.log('user', user);
+
+      // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
+      if (!user) {
+        router.push('/api/auth/signin'); // 로그인 페이지 경로
+      }
+    };
+
+    checkUserStatus();
+
+    // console.log('router', router);
+    // console.log('currentUser', currentUser);
+    // console.log('Current Path:', currentPath);
+
+  }, [router]);
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
