@@ -33,8 +33,11 @@ const Navbar = () => {
       setCurrentUser(user);
       console.log('user', user);
 
-      // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-      if (!user) {
+      // 현재 URL 확인
+      const currentUrl = window.location.pathname; 
+
+      // 현재 경로가 로그인 페이지가 아니고, 사용자가 로그인되어 있지 않은 경우에만 리다이렉트
+      if (!user && currentUrl  !== '/api/auth/signin') {
         router.push('/api/auth/signin'); // 로그인 페이지 경로
       }
     };
@@ -45,7 +48,7 @@ const Navbar = () => {
     // console.log('currentUser', currentUser);
     // console.log('Current Path:', currentPath);
 
-  }, [router]);
+  }, []);
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
