@@ -5,8 +5,8 @@ import Button from '@/components/Button';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { getSession, signIn } from 'next-auth/react';
-// import getCurrentUser from '@/app/actions/getCurrentUser';
+// import { getSession, signIn } from 'next-auth/react';
+import getCurrentUser from '@/app/actions/getCurrentUser';
 import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
@@ -24,7 +24,7 @@ const LoginPage = () => {
   });
 
   const loginCheck = async () => {
-    const currentUser = await getSession();
+    const currentUser = await getCurrentUser();
 
     // 로그인이 되었다면 메인 페이지로 이동
     if (currentUser && currentUser !== null) {
