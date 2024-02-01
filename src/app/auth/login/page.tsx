@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-// import { getSession, signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import { useRouter } from 'next/navigation';
 
