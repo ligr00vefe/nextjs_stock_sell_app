@@ -37,8 +37,7 @@ const Navbar = () => {
     if (!userSession || !user) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
     }   
-   
-       
+          
   }, [router])
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const Navbar = () => {
     // console.log('router', router);       
     // console.log('Current Path:', currentPath);
 
-  }, [currentPath, loginCheck]);
+  }, [loginCheck]);
 
   console.log('Navbar_currentSession', currentSession);       
   console.log('Navbar_currentUser', currentUser);    
