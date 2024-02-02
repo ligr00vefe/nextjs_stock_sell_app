@@ -1,11 +1,12 @@
 import React from 'react'
-import getStocks, { IStocksParams } from '@/app/actions/getStocks'
+import getStocks from '@/app/actions/getStocks'
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
 
 import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
+import { IStocksParams } from '../actions/getFavorites';
 
 interface IStocksProps {
   searchParams: IStocksParams
