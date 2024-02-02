@@ -1,12 +1,15 @@
 import prisma from "@/helpers/prismadb";
-import { IStocksParams } from "@/app/actions/getFavorites";
+import { Stock } from "@prisma/client";
 
-export default async function getStocks(params: IStocksParams) {
+interface StocksData {
+  data: Stock[];
+  totalItems: number;
+}
+
+export default async function getStocks(): Promise<StocksData> {
 
   try {
-
-    const { symbol, currency, company, price, desired_selling_price } = params
-    
+   
     let query: any = {};  
 
     // totalItems 전체 아이템 개수

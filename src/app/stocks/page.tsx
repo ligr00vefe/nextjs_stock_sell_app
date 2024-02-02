@@ -8,13 +8,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { IStocksParams } from '../actions/getFavorites';
 
-interface IStocksProps {
-  searchParams: IStocksParams
-}
+const StocksPage = async () => {
 
-const StocksPage = async ({ searchParams }: IStocksProps) => {
-
-  const stocks = await getStocks(searchParams);
+  const stocks = await getStocks();
   const currentUser = await getCurrentUser();
 
   // console.log('stocks: ', stocks);
