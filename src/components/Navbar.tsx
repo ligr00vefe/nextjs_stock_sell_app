@@ -36,16 +36,10 @@ const Navbar = () => {
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     if (!userSession || !user) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
-    }
+    }   
    
-   
-    console.log('Navbar_userSession', userSession);       
-    console.log('Navbar_currentUser', currentUser);       
-  }, [router, currentUser])
-
-  useEffect(() => { 
-    
-  }, []);
+       
+  }, [router])
 
   useEffect(() => {
     // 페이지 로드 시에도 경로 업데이트
@@ -54,7 +48,10 @@ const Navbar = () => {
     // console.log('router', router);       
     // console.log('Current Path:', currentPath);
 
-  }, [currentPath, router, loginCheck]);
+  }, [currentPath, loginCheck]);
+
+  console.log('Navbar_currentSession', currentSession);       
+  console.log('Navbar_currentUser', currentUser);    
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
