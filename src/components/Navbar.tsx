@@ -19,6 +19,7 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
+  const [currentSession, setCurrentSession] = useState({});
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -31,7 +32,9 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
     if (!userSession || !currentUser) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
     }
-
+    if(userSession) {
+      setCurrentSession(userSession);
+    }
     console.log('Navbar_userSession', userSession);       
     console.log('Navbar_currentUser', currentUser);       
   }, [router, currentUser])
@@ -67,7 +70,7 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
         </div>
         
         <div className='hidden sm:block'>
-          <NavItem userSession={userSession} />
+          <NavItem currentSession={currentSession} />
         </div>
       </div>
 
