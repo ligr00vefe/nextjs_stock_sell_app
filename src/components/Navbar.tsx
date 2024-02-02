@@ -22,35 +22,36 @@ const Navbar = () => {
     setMenu(!menu);
   }
 
-  const loginCheck = useCallback(async () => {    
-    const userSession = await getSession();
-    const user = await getCurrentUser();
-
-    if(userSession) {
-      setCurrentSession(userSession);
-    }
-    if(user) {
-      setCurrentUser(user);
-    }
-
-    // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    if (!userSession || !user) {
-      router.push('/api/auth/signin'); // 로그인 페이지 경로
-    }   
-          
-  }, [router])
-
   useEffect(() => {
     // 페이지 로드 시에도 경로 업데이트
     setCurrentPath(window.location.pathname);    
+
+    const loginCheck = async () => {    
+      const userSession = await getSession();
+      const user = await getCurrentUser();
+  
+      if(userSession) {
+        setCurrentSession(userSession);
+      }
+      if(user) {
+        setCurrentUser(user);
+      }
+  
+      // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
+      if (!userSession || !user) {
+        router.push('/api/auth/signin'); // 로그인 페이지 경로
+      }   
+      console.log('Navbar_currentSession', currentSession);       
+      console.log('Navbar_currentUser', currentUser); 
+    };     
+
     loginCheck();
+
     // console.log('router', router);       
     // console.log('Current Path:', currentPath);
+  }, [router]);
 
-  }, [loginCheck]);
-
-  console.log('Navbar_currentSession', currentSession);       
-  console.log('Navbar_currentUser', currentUser);    
+  
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
