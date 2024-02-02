@@ -7,6 +7,7 @@ import NavItem from './NavItem';
 import { useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
 import getCurrentUser from '@/app/actions/getCurrentUser';
+import { User } from '@prisma/client';
 
 const Navbar = () => {
   // console.log('currentUser', currentUser);
@@ -15,7 +16,7 @@ const Navbar = () => {
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
   const [currentSession, setCurrentSession] = useState({});
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleMenu = () => {
     setMenu(!menu);
