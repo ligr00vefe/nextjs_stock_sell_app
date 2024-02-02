@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
@@ -8,40 +8,39 @@ import { Favorite, User } from '@prisma/client';
 import getFavorites, { IStocksParams } from '../actions/getFavorites';
 import getCurrentUser from '../actions/getCurrentUser';
 
+interface IStocksProps {
+  searchParams: IStocksParams
+}
+
 export interface IFavoritesPageProps {
   stocks: { data: Favorite[] };
   currentUser: User | null;
 }
 
-interface IStocksProps {
-  searchParams: IStocksParams
-}
-
-const FavoritesPage = () => {
+const FavoritesPage = ({searchParams}: IStocksProps) => {
 
   const [stocks, setStocks] = useState<{ data: Favorite[] }>({ data: [] });
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   // console.log('stocks: ', stocks);
 
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);      
+      
+      const stocks = await getFavorites(searchParams);
+      const currentUser = await getCurrentUser();
+      setStocks(stocks);
+      setCurrentUser(currentUser);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchParams]);
 
-  useEffect(() => {
-    const fetchData = async ({searchParams}: IStocksProps) => {
-      try {
-        setLoading(true);      
-        
-        const stocks = await getFavorites(searchParams);
-        const currentUser = await getCurrentUser();
-        setStocks(stocks);
-        setCurrentUser(currentUser);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData(searchParams);
+  useEffect(() => {  
+    fetchData();
   }, []);
 
   if (loading) {
