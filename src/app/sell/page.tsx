@@ -46,7 +46,7 @@ const SellListPage = () => {
   }
 
   return (    
-    <div className='flex flex-col items-center justify-start w-[100vw] h-[100vh] py-[150px]'>
+    <div className='flex flex-col items-center justify-start w-full h-full py-[150px]'>
       <div className='flex w-[80vw] max-w-[1400px] justify-center pb-10'>
         <h1 className='font-bold text-2xl'>매도 종목 리스트</h1>
       </div>

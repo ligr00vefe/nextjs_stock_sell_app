@@ -48,16 +48,16 @@ const SearchPage: React.FC = () => {
       ...selectedStock
     };
 
-    // console.log('requestData', requestData);
+    console.log('requestData', requestData);
 
     try {
       const response = await axios.post(`/api/stocks`, requestData);
       router.push(`/stocks`);
       reset();
-      toast.success('관심 종목을 성공적으로 등록했습니다.');
+      toast.success('성공적으로 등록했습니다.');
     } catch (error) {
       console.error('Error while adding stock:', error);
-      toast.error('관심 종목을 등록하는 중에 문제가 발생했습니다.');
+      toast.error('문제가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -104,22 +104,24 @@ const SearchPage: React.FC = () => {
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.name}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>{stock.currency}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color="primary" 
-                    startIcon={<AddBoxIcon />}
-                    className="bg-blue-500"
-                    onClick={() => {
-                      setSelectedStock({
-                        symbol: stock.symbol,
-                        company: stock.name,
-                        currency: stock.currency,
-                      });
-                    }}
-                  >
-                    등록
-                  </Button>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Button 
+                      type="submit" 
+                      variant="contained" 
+                      color="primary" 
+                      startIcon={<AddBoxIcon />}
+                      className="bg-blue-500"
+                      onClick={() => {
+                        setSelectedStock({
+                          symbol: stock.symbol,
+                          company: stock.name,
+                          currency: stock.currency,
+                        });
+                      }}
+                    >
+                      등록
+                    </Button>
+                  </form>                  
                 </td>
               </tr>
             ))}

@@ -5,11 +5,16 @@ import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Favorite, User } from '@prisma/client';
-import axios from 'axios';
+import getFavorites, { IStocksParams } from '../actions/getFavorites';
+import getCurrentUser from '../actions/getCurrentUser';
 
 export interface IFavoritesPageProps {
   stocks: { data: Favorite[] };
   currentUser: User | null;
+}
+
+interface IStocksProps {
+  searchParams: IStocksParams
 }
 
 const FavoritesPage = () => {
@@ -19,13 +24,16 @@ const FavoritesPage = () => {
   const [loading, setLoading] = useState(true);
   // console.log('stocks: ', stocks);
 
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async ({searchParams}: IStocksProps) => {
       try {
-        setLoading(true);
-        const response = await axios.get('/pages/api/favoritesAPI'); // API 엔드포인트 호출
-        setStocks(response.data.stocks);
-        setCurrentUser(response.data.currentUser);
+        setLoading(true);      
+        
+        const stocks = await getFavorites(searchParams);
+        const currentUser = await getCurrentUser();
+        setStocks(stocks);
+        setCurrentUser(currentUser);
       } catch (error) {
         console.error('Error fetching data: ', error);
       } finally {
@@ -33,7 +41,7 @@ const FavoritesPage = () => {
       }
     };
 
-    fetchData();
+    fetchData(searchParams);
   }, []);
 
   if (loading) {
@@ -47,7 +55,7 @@ const FavoritesPage = () => {
   }
 
   return (    
-    <div className='flex flex-col items-center justify-start w-[100vw] h-[100vh] py-[150px]'>
+    <div className='flex flex-col items-center justify-start w-full h-full py-[150px]'>
       <table className="w-[80vw] max-w-[1400px] border-[2px] border-black border-collapse border-spacing-0 p-10">
         <colgroup>
           <col className='w-[15%]' />

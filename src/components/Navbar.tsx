@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import NavItem from './NavItem';
-import SearchBox from './SearchBox';
-import { User } from '@prisma/client';
+// import SearchBox from './SearchBox';
+import { Session, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { getSession } from 'next-auth/react';
 
 interface NavbarProps {
   // 유저가 로그인 되어서 props로 user 데이터를 받아왔을 때는 Prisma/client에서 제공하는 기본 User 안의 타입을 쓰고 로그인이 안되었을 때는 타입 null 
@@ -23,20 +24,30 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
     setMenu(!menu);
   }
 
-  useEffect(() => {
-    // 페이지 로드 시에도 경로 업데이트
-    setCurrentPath(window.location.pathname);
+  const loginCheck = useCallback(async () => {    
+    const userSession = await getSession();
 
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    if (!currentUser) {
+    if (!userSession && !currentUser) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
-    } 
+    }
 
-    // console.log('router', router);
-    // console.log('currentUser', currentUser);
+    // console.log('Navbar_userSession', userSession);       
+    // console.log('Navbar_currentUser', currentUser);       
+  }, [router, currentUser])
+
+  useEffect(() => { 
+    
+  }, []);
+
+  useEffect(() => {
+    // 페이지 로드 시에도 경로 업데이트
+    setCurrentPath(window.location.pathname);    
+    loginCheck();
+    // console.log('router', router);       
     // console.log('Current Path:', currentPath);
 
-  }, [currentUser, currentPath, router]);
+  }, [currentPath, router, loginCheck]);
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>

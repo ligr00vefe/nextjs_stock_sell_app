@@ -18,7 +18,7 @@ const NavItem = ({ mobile, currentUser }: NavItemProps) => {
   // session?.user?.id
 
   // getServerSession을 모듈화하여 session 데이터 확인
-  console.log('NavItem_currentUser', currentUser);      
+  // console.log('NavItem_currentUser', currentUser);      
 
   return (
     <ul className={`text-md justify-center flex gap-4 w-full items-center ${mobile && "flex-col h-full pt-2 pb-5"}`}>

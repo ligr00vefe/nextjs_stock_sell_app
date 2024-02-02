@@ -1,53 +1,22 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
-import getStocks from '@/app/actions/getStocks'
-import { IStocksParams } from '@/app/actions/getFavorites'
+import React from 'react'
+import getStocks, { IStocksParams } from '@/app/actions/getStocks'
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
 
 import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Stock, User } from '@prisma/client';
 
-interface StocksData {
-  data: Stock[];
-  totalItems: number;
+interface IStocksProps {
+  searchParams: IStocksParams
 }
 
-const StocksPage = () => {
+const StocksPage = async ({ searchParams }: IStocksProps) => {
 
-  const [stocks, setStocks] = useState<StocksData | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const stocks = await getStocks(searchParams);
+  const currentUser = await getCurrentUser();
 
   // console.log('stocks: ', stocks);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const searchParams: IStocksParams = {
-          price: 0,
-          desired_selling_price: 0
-        };
-        const stocksData = await getStocks(searchParams);
-        const currentUserData = await getCurrentUser();
-        setStocks(stocksData);
-        setCurrentUser(currentUserData);
-      } catch (error) {
-        console.error('데이터 가져오는 중 오류 발생:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <div>로딩 중...</div>; // 또는 다른 로딩 상태 표시
-  }
 
   if (!stocks || stocks.data.length === 0) {
     return (
@@ -83,7 +52,7 @@ const StocksPage = () => {
           </thead>
           <tbody>
             {stocks.data.map((stock) => (
-              <StockTableRow stock={{ ...stock, stockId: stock.id }} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={true} hasSellingPrice={false} readonly={false} />           
+              <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={true} hasSellingPrice={false} readonly={false} />           
             ))}
           </tbody>          
         </table>
