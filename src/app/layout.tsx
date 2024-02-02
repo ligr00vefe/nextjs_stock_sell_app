@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 
 import Providers from '@/providers';
 import ToastProvider from '@/components/ToastProvider'
+import { User } from '@prisma/client'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,12 +20,11 @@ const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export default async function RootLayout({
   children,
+  currentUser
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  currentUser: User | null
 }) {
-
-  const currentUser = await getCurrentUser();
-
   return (
     <html lang="ko">
       <body className={inter.className}>
@@ -36,4 +36,17 @@ export default async function RootLayout({
       </body>
     </html>
   )
+}
+
+// getServerSideProps 함수 정의
+export async function getServerSideProps() {
+  // 서버 측에서 currentUser 데이터 가져오기
+  const currentUser = await getCurrentUser();
+
+  // 가져온 currentUser를 props로 반환
+  return {
+    props: {
+      currentUser
+    }
+  }
 }
