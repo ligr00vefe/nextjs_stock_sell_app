@@ -7,6 +7,7 @@ import NavItem from './NavItem';
 import { Session, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
+import getCurrentUser from '@/app/actions/getCurrentUser';
 
 interface NavbarProps {
   // 유저가 로그인 되어서 props로 user 데이터를 받아왔을 때는 Prisma/client에서 제공하는 기본 User 안의 타입을 쓰고 로그인이 안되었을 때는 타입 null 
@@ -20,6 +21,7 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
   const [currentSession, setCurrentSession] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -27,13 +29,17 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
 
   const loginCheck = useCallback(async () => {    
     const userSession = await getSession();
+    const user = await getCurrentUser();
 
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    if (!userSession || !currentUser) {
+    if (!userSession || !user) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
     }
     if(userSession) {
       setCurrentSession(userSession);
+    }
+    if(user) {
+      setCurrentUser(user);
     }
     console.log('Navbar_userSession', userSession);       
     console.log('Navbar_currentUser', currentUser);       
@@ -70,7 +76,7 @@ const Navbar = ( { currentUser }: NavbarProps ) => {
         </div>
         
         <div className='hidden sm:block'>
-          <NavItem currentSession={currentSession} />
+          <NavItem currentUser={currentUser} />
         </div>
       </div>
 
