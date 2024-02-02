@@ -43,6 +43,8 @@ const Navbar = () => {
           router.push('/api/auth/signin'); // 로그인 페이지 경로
         }
       }   
+      console.log('Navbar_userSession', userSession);       
+      console.log('Navbar_user', user); 
       console.log('Navbar_currentSession', currentSession);       
       console.log('Navbar_currentUser', currentUser); 
     };     
