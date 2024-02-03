@@ -14,7 +14,7 @@ NEXTAUTH_SECRET = "nextAuthSecret"
   to = "/api/auth"
   status = 200
 
-[[[headers]]]
+[[headers]]
   # Match all headers for the main domain.
   for = "/*"
     [headers.values]
