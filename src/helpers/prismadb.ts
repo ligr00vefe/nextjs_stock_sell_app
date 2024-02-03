@@ -10,6 +10,13 @@ declare global {
 const client = globalThis.prisma || new PrismaClient();
 
 // development 환경에서만 동작하도록 조건처리
-// if (process.env.NODE_ENV !== 'production') globalThis.prisma = client;
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = client;
+
+// 이 코드는 서버가 시작하는 부분에 위치해야 합니다.
+if (process.env.NODE_ENV === "development") {
+  process.env.NEXTAUTH_URL = "http://localhost:3000";
+} else {
+  process.env.NEXTAUTH_URL = "https://your-production-url.com";
+}
 
 export default client
