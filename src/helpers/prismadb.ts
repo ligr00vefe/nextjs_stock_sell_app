@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') globalThis.prisma = client;
 if (process.env.NODE_ENV === "development") {
   process.env.NEXTAUTH_URL = "http://localhost:3000";
 } else {
-  process.env.NEXTAUTH_URL = "https://your-production-url.com";
+  process.env.NEXTAUTH_URL = "https://stocksellweb98f6dd.netlify.app";
 }
 
 export default client
