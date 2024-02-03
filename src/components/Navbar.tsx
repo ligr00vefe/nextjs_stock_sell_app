@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavItem from './NavItem';
 // import SearchBox from './SearchBox';
 import { useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
 import getCurrentUser from '@/app/actions/getCurrentUser';
-import { User } from '@prisma/client';
+import { Session, User } from '@prisma/client';
 
 const Navbar = () => {
   // console.log('currentUser', currentUser);
