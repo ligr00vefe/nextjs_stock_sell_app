@@ -8,6 +8,7 @@ export async function POST(
   ) {
 
   const currentUser = await getCurrentUser();
+  console.log('stocks_currentUser: ', currentUser);
 
   // 로그인 정보가 없으면 에러 출력
   if (!currentUser) {
@@ -22,7 +23,7 @@ export async function POST(
     currency,
     price
   } = body;
-  // console.log('body: ', body);
+  console.log('stocks_body: ', body);
 
   // body에 값이 하나라도 없으면 에러 호출
   Object.keys(body).forEach((value: any) => {

@@ -51,7 +51,7 @@ const SearchPage: React.FC = () => {
     console.log('requestData', requestData);
 
     try {
-      const response = await axios.post(`/api/stocks`, requestData);
+      await axios.post(`/api/stocks`, requestData);
       router.push(`/stocks`);
       reset();
       toast.success('성공적으로 등록했습니다.');
