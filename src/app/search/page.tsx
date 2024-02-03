@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
+import getCurrentUser from '../actions/getCurrentUser';
+import { useSession } from 'next-auth/react';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -39,6 +41,9 @@ const SearchPage: React.FC = () => {
       desired_selling_price: 0,
     }
   });
+
+  const currentUser = useSession();
+  console.log('currentUser: ', currentUser);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
