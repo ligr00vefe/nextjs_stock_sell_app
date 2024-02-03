@@ -5,18 +5,19 @@ import React, { useEffect, useState } from 'react'
 import NavItem from './NavItem';
 // import SearchBox from './SearchBox';
 import { useRouter } from 'next/navigation';
-import { getSession } from 'next-auth/react';
-import getCurrentUser from '@/app/actions/getCurrentUser';
-import { Session, User } from '@prisma/client';
+import { User } from '@prisma/client';
 
-const Navbar = () => {
+interface NavbarProps {
+  // 유저가 로그인 되어서 props로 user 데이터를 받아왔을 때는 Prisma/client에서 제공하는 기본 User 안의 타입을 쓰고 로그인이 안되었을 때는 타입 null 
+  currentUser?: User | null; 
+}
+
+const Navbar = ({ currentUser }:NavbarProps) => {
   // console.log('currentUser', currentUser);
 
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
-  const [currentSession, setCurrentSession] = useState<any>({});
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -24,36 +25,18 @@ const Navbar = () => {
 
   useEffect(() => {
     // 페이지 로드 시에도 경로 업데이트
-    setCurrentPath(window.location.pathname);    
+    setCurrentPath(window.location.pathname);
 
-    const loginCheck = async () => {    
-      const userSession = await getSession();
-      const user = await getCurrentUser();
-  
-      if(userSession) {
-        setCurrentSession(userSession);
-        console.log('Navbar_currentSession', currentSession);      
-      }
-      if(user) {
-        setCurrentUser(user);
-        console.log('Navbar_currentUser', currentUser); 
-      }
-  
-      // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-      if (!userSession && !user) {
-        if (!window.location.pathname.startsWith('/auth/login') && !window.location.pathname.startsWith('/api/auth/signin')) {
-          router.push('/api/auth/signin'); // 로그인 페이지 경로
-        }
-      }   
-      console.log('Navbar_userSession', userSession);       
-      console.log('Navbar_user', user); 
-    };     
+    // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
+    if (!currentUser) {
+      router.push('/api/auth/signin'); // 로그인 페이지 경로
+    } 
 
-    loginCheck();
-
-    // console.log('router', router);       
+    // console.log('router', router);
+    // console.log('currentUser', currentUser);
     // console.log('Current Path:', currentPath);
-  }, [currentSession, currentUser, router]);
+
+  }, [currentUser, currentPath, router]);
  
 
   return (
@@ -74,7 +57,7 @@ const Navbar = () => {
         </div>
         
         <div className='hidden sm:block'>
-          <NavItem currentSession={currentSession} />
+          <NavItem currentUser={currentUser} />
         </div>
       </div>
 
