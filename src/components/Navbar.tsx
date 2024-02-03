@@ -15,7 +15,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
-  const [currentSession, setCurrentSession] = useState({});
+  const [currentSession, setCurrentSession] = useState<any>({});
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleMenu = () => {
@@ -74,7 +74,7 @@ const Navbar = () => {
         </div>
         
         <div className='hidden sm:block'>
-          <NavItem currentSession={userSession} />
+          <NavItem currentSession={currentSession} />
         </div>
       </div>
 
