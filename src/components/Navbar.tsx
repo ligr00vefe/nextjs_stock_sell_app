@@ -32,9 +32,11 @@ const Navbar = () => {
   
       if(userSession) {
         setCurrentSession(userSession);
+        console.log('Navbar_currentSession', currentSession);      
       }
       if(user) {
         setCurrentUser(user);
+        console.log('Navbar_currentUser', currentUser); 
       }
   
       // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
@@ -45,8 +47,6 @@ const Navbar = () => {
       }   
       console.log('Navbar_userSession', userSession);       
       console.log('Navbar_user', user); 
-      console.log('Navbar_currentSession', currentSession);       
-      console.log('Navbar_currentUser', currentUser); 
     };     
 
     loginCheck();
@@ -54,8 +54,7 @@ const Navbar = () => {
     // console.log('router', router);       
     // console.log('Current Path:', currentPath);
   }, [router]);
-
-  
+ 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
@@ -75,7 +74,7 @@ const Navbar = () => {
         </div>
         
         <div className='hidden sm:block'>
-          <NavItem currentUser={currentUser} />
+          <NavItem currentSession={userSession} />
         </div>
       </div>
 
