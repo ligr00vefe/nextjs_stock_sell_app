@@ -42,9 +42,6 @@ const SearchPage: React.FC = () => {
     }
   });
 
-  const currentUser = useSession();
-  console.log('currentUser: ', currentUser);
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
 
@@ -53,10 +50,10 @@ const SearchPage: React.FC = () => {
       ...selectedStock
     };
 
-    console.log('requestData', requestData);
+    // console.log('requestData', requestData);
 
     try {
-      await axios.post(`/app/api/stocks`, requestData);
+      await axios.post(`/api/stocks`, requestData);
       router.push(`/stocks`);
       reset();
       toast.success('성공적으로 등록했습니다.');

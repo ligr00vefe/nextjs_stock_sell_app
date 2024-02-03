@@ -15,6 +15,8 @@ export default async function getFavorites(params: IStocksParams) {
 
   const currentUser = await getCurrentUser();
 
+  console.log('favorites_currentUser', currentUser);
+  
   try {
 
     const { symbol, currency, company, price, desired_selling_price } = params

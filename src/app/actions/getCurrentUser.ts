@@ -9,7 +9,7 @@ export async function getSession() {
 export default async function getCurrentUser() {
   try {
     const session = await getSession();
-
+    console.log('session: ', session);
     // session.user에 email이 없을 경우
     if (!session?.user?.email) {
       return null;
