@@ -53,7 +53,7 @@ const Navbar = () => {
 
     // console.log('router', router);       
     // console.log('Current Path:', currentPath);
-  }, [router]);
+  }, [currentSession, currentUser, router]);
  
 
   return (
