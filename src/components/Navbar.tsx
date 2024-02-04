@@ -29,7 +29,7 @@ const Navbar = () => {
     const fetchCurrentUser = async () => {
       try {
         const response = await axios.get('/api/user');
-        // console.log('response', response.data);
+        console.log('response_currentUser', response.data);
 
         setCurrentUser(response.data);
       } catch (error) {
@@ -47,7 +47,7 @@ const Navbar = () => {
     if (!currentUser && (!window.location.pathname.startsWith('/auth/login') || !window.location.pathname.startsWith('/api/auth/signin'))) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
     } 
-    // console.log('currentUser', currentUser);
+    console.log('currentUser', currentUser);
 
   }, [currentUser, router]); 
 
