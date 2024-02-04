@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import getStocks from '@/app/actions/getStocks'
 import getCurrentUser from '@/app/actions/getCurrentUser';
@@ -13,7 +15,7 @@ interface IStocksProps {
   totalItems: number
 }
 
-const StocksPage = async () => {
+const StocksPage = () => {
 
   const [stocks, setStocks] = useState<IStocksProps | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -32,9 +34,6 @@ const StocksPage = async () => {
 
     fetchData();
   }, []);
-
-  console.log('stocks: ', stocks);
-  console.log('currentUser: ', currentUser);
 
   if (!stocks || stocks.data.length === 0) {
     return (
