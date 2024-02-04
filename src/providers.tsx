@@ -4,12 +4,13 @@
 import React from 'react'
 import { CssBaseline, StyledEngineProvider } from '@mui/material'
 import { SessionProvider } from 'next-auth/react'
+import { Session } from 'next-auth'
 
-const Providers = ({ children }: { children: React.ReactNode }) => {
+const Providers = ({ children }: { children: React.ReactNode }, session:Session ) => {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <SessionProvider>
+        <SessionProvider session={session}>
           <CssBaseline />
           {children}
         </SessionProvider>          
