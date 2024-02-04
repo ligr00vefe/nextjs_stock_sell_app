@@ -4,7 +4,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import getStocks from '@/app/actions/getStocks';
 
 // GET 요청 처리
-export async function getStocksHandler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
     // 데이터 가져오기
     const stocks = await getStocks();
@@ -19,7 +19,7 @@ export async function getStocksHandler(req: NextApiRequest, res: NextApiResponse
 }
 
 // POST 요청 처리
-export async function createStockHandler(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
     // 현재 사용자 가져오기
     const currentUser = await getCurrentUser();
