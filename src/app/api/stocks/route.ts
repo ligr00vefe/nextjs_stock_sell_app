@@ -9,6 +9,8 @@ export async function GET() {
     // 데이터 가져오기
     const stocks = await getStocks();
     const currentUser = await getCurrentUser();
+    console.log('stocks: ', stocks);
+    console.log('currentUser: ', currentUser);
 
     // 성공적인 응답 반환
     return NextResponse.json({ stocks, currentUser });
