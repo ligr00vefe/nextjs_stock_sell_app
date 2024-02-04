@@ -13,26 +13,35 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleMenu = () => {
     setMenu(!menu);
   }
 
-  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    // 페이지 로드 시에도 경로 업데이트
+    setCurrentPath(window.location.pathname);  
+  }, []);
+
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
         const response = await axios.get('/api/user');
+        console.log('response', response);
+
         setCurrentUser(response.data);
-        console.log('currentUser1', currentUser);
       } catch (error) {
         console.error('Failed to fetch current user:', error);
         // 적절한 오류 처리를 여기에 추가하세요.
       }
     };
 
-    fetchCurrentUser();
+    // 만약 currentUser가 없는 경우에만 API 호출
+    if (!currentUser) {
+      fetchCurrentUser();
+    }
 
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     if (!currentUser) {
@@ -40,18 +49,7 @@ const Navbar = () => {
     } 
     console.log('currentUser', currentUser);
 
-  }, [currentUser, router]);
-
-
-  useEffect(() => {
-    // 페이지 로드 시에도 경로 업데이트
-    setCurrentPath(window.location.pathname);  
-
-    // console.log('router', router);
-    // console.log('Current Path:', currentPath);
-
-  }, []);
- 
+  }, [currentUser, router]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
