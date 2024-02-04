@@ -28,7 +28,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await axios.get('/api/user');
+        const response = await axios.get(`${process.env.DATABASE_URL}/api/user`);
         console.log('response_currentUser', response.data);
 
         setCurrentUser(response.data);
