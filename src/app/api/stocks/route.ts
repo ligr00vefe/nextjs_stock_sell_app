@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getStocks from '@/app/actions/getStocks';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextRequest, res: NextResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     // GET 요청 처리
     try {
