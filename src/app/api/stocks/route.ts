@@ -12,10 +12,10 @@ export default async function handler(req: NextRequest, res: NextResponse) {
       const currentUser = await getCurrentUser();
 
       // 성공적인 응답 반환
-      return NextResponse.json({ stocks, currentUser }, { status: 200 });
+      res.status(200).json({ stocks, currentUser });
     } catch (error) {
       // 오류 처리
-      return NextResponse.json({ error: 'Error fetching stocks' }, { status: 500 });
+      res.status(500).json({ error: 'Error fetching stocks' });
     }
   } else if (req.method === 'POST') {
     // POST 요청 처리
@@ -38,13 +38,14 @@ export default async function handler(req: NextRequest, res: NextResponse) {
       });
 
       // 성공적인 응답 반환
-      return NextResponse.json({ newStock, currentUser}, { status: 201 });
+      res.status(201).json({ newStock, currentUser});
     } catch (error) {
       // 오류 처리
-      return NextResponse.json({ error: 'Error creating new stock' }, { status: 500 });
+      res.status(500).json({ error: 'Error creating new stock' });
     }
   } else {
     // 지원하지 않는 HTTP 메서드에 대한 처리
-    return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+    res.setHeader('Allow', 'GET, POST');
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
