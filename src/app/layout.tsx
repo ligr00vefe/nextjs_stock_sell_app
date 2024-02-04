@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
-import getCurrentUser from '@/app/actions/getCurrentUser'
 import dynamic from 'next/dynamic'
 
 import Providers from '@/providers';
@@ -23,13 +22,11 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-  const currentUser = await getCurrentUser();
-
   return (
     <html lang="ko">
       <body className={inter.className}>
         <Providers>
-          <Navbar currentUser={currentUser} />
+          <Navbar />
           <ToastProvider />
           {children}
         </Providers>

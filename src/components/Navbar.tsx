@@ -5,14 +5,9 @@ import React, { useEffect, useState } from 'react'
 import NavItem from './NavItem';
 // import SearchBox from './SearchBox';
 import { useRouter } from 'next/navigation';
-import { User } from '@prisma/client';
+import axios from 'axios';
 
-interface NavbarProps {
-  // 유저가 로그인 되어서 props로 user 데이터를 받아왔을 때는 Prisma/client에서 제공하는 기본 User 안의 타입을 쓰고 로그인이 안되었을 때는 타입 null 
-  currentUser?: User | null; 
-}
-
-const Navbar = ({ currentUser }:NavbarProps) => {
+const Navbar = () => {
   // console.log('currentUser', currentUser);
 
   const [menu, setMenu] = useState(false);
@@ -23,20 +18,39 @@ const Navbar = ({ currentUser }:NavbarProps) => {
     setMenu(!menu);
   }
 
+  const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
-    // 페이지 로드 시에도 경로 업데이트
-    setCurrentPath(window.location.pathname);
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/user');
+        setCurrentUser(response.data);
+        console.log('currentUser1', currentUser);
+      } catch (error) {
+        console.error('Failed to fetch current user:', error);
+        // 적절한 오류 처리를 여기에 추가하세요.
+      }
+    };
+
+    fetchCurrentUser();
 
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     if (!currentUser) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
     } 
+    console.log('currentUser', currentUser);
+
+  }, [currentUser, router]);
+
+
+  useEffect(() => {
+    // 페이지 로드 시에도 경로 업데이트
+    setCurrentPath(window.location.pathname);  
 
     // console.log('router', router);
-    // console.log('currentUser', currentUser);
     // console.log('Current Path:', currentPath);
 
-  }, [currentUser, currentPath, router]);
+  }, []);
  
 
   return (

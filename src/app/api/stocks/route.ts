@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getStocks from '@/app/actions/getStocks';
