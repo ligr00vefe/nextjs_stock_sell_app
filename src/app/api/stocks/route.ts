@@ -2,16 +2,19 @@ import { NextResponse } from "next/server";
 
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import { useSession } from "next-auth/react";
 
 export async function POST(
     request: Request
   ) {
 
-  const currentUser = await getCurrentUser();
-  console.log('stocks_currentUser: ', currentUser);
+  const currentUser1 = await getCurrentUser();
+  const currentUser2 = useSession();
+  console.log('stocks_currentUser1: ', currentUser1);
+  console.log('stocks_currentUser2: ', currentUser2);
 
   // 로그인 정보가 없으면 에러 출력
-  if (!currentUser) {
+  if (!currentUser1) {
     return NextResponse.error();
   }
 
@@ -36,7 +39,7 @@ export async function POST(
   const existingStock = await prisma.stock.findFirst({
     where: {
         symbol: symbol,
-        userId: currentUser.id
+        userId: currentUser1.id
     }
   });
 
@@ -60,7 +63,7 @@ export async function POST(
               company,
               currency,
               price: Number(price),
-              userId: currentUser.id,
+              userId: currentUser1.id,
           }
       });
 
