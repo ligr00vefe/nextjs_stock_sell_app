@@ -9,6 +9,7 @@ import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Stock, User } from '@prisma/client';
+import axios from 'axios';
 
 interface IStocksProps {
   data: Stock[],
@@ -25,18 +26,15 @@ const StocksPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true); // 로딩 시작
-        const stocksData = await getStocks();
-        const currentUserData = await getCurrentUser();
-        if (stocksData) {
-          setStocks(stocksData);
-        }
-        setCurrentUser(currentUserData);
+        const response = await axios.get('/api/stocks'); // GET 요청을 보냅니다.
+        const { stocks, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        setStocks(stocks);
+        setCurrentUser(currentUser);
       } catch (err) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.'); // 에러 설정
-        console.error(err); // 개발자 도구에 로그 출력
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
+        console.error(err);
       } finally {
-        setIsLoading(false); // 로딩 종료
+        setIsLoading(false);
       }
     };
 
