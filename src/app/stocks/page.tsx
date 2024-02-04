@@ -25,7 +25,7 @@ const StocksPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.DATABASE_URL}/api/stocks`); // GET 요청을 보냅니다.
+        const response = await axios.get(`${process.env.NEXTAUTH_PUBLIC_URL}/api/stocks`); // GET 요청을 보냅니다.
         const { stocks, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
         setStocks(stocks);
         setCurrentUser(currentUser);
