@@ -43,6 +43,7 @@ const Navbar = () => {
       fetchCurrentUser();
     }
 
+    console.log('window.location.pathname: ', window.location.pathname);
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     if (!currentUser && (!window.location.pathname.startsWith('/auth/login') || !window.location.pathname.startsWith('/api/auth/signin'))) {
       router.push('/api/auth/signin'); // 로그인 페이지 경로
