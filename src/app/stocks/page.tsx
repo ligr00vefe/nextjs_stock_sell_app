@@ -19,25 +19,41 @@ const StocksPage = () => {
 
   const [stocks, setStocks] = useState<IStocksProps | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
+  const [error, setError] = useState<string | null>(null); // 에러 상태 추가
 
   useEffect(() => {
     const fetchData = async () => {
-      const stocksData = await getStocks();
-      const currentUserData = await getCurrentUser();
-      if (stocksData) {
-        setStocks(stocksData);
+      try {
+        setIsLoading(true); // 로딩 시작
+        const stocksData = await getStocks();
+        const currentUserData = await getCurrentUser();
+        if (stocksData) {
+          setStocks(stocksData);
+        }
+        setCurrentUser(currentUserData);
+      } catch (err) {
+        setError('데이터를 불러오는 중 오류가 발생했습니다.'); // 에러 설정
+        console.error(err); // 개발자 도구에 로그 출력
+      } finally {
+        setIsLoading(false); // 로딩 종료
       }
-      setCurrentUser(currentUserData);
-      console.log('stocks: ', stocksData);
-      console.log('currentUser: ', currentUserData);
     };
 
     fetchData();
   }, []);
 
+  if (isLoading) {
+    return <div>로딩 중...</div>; // 로딩 인디케이터 추가
+  }
+
+  if (error) {
+    return <div>오류: {error}</div>; // 에러 메시지 표시
+  }
+
   if (!stocks || stocks.data.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-start w-[100vw] h-[100vh] py-[120px]'>
+      <div className='flex flex-col items-center justify-start w-full h-full py-[120px]'>
         <div className='flex w-[80vw] max-w-[1400px] justify-end pb-3'>
           <Button variant="contained" href="/stocks/upload" startIcon={<AddCircleIcon />}>관심종목 등록</Button>
         </div>
@@ -46,7 +62,7 @@ const StocksPage = () => {
     )
   }else {
     return (    
-      <div className='flex flex-col items-center justify-start w-[100vw] h-[100vh] py-[150px]'>
+      <div className='flex flex-col items-center justify-start w-full h-full py-[150px]'>
         <div className='flex w-[80vw] max-w-[1400px] justify-end pb-3'>
           <Button variant="contained" href="/stocks/upload" startIcon={<AddCircleIcon />}>관심종목 등록</Button>
         </div>
