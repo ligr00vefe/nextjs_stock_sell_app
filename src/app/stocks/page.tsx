@@ -13,7 +13,8 @@ const StocksPage = async () => {
   const stocks = await getStocks();
   const currentUser = await getCurrentUser();
 
-  // console.log('stocks: ', stocks);
+  console.log('stocks: ', stocks);
+  console.log('currentUser: ', currentUser);
 
   if (!stocks || stocks.data.length === 0) {
     return (
