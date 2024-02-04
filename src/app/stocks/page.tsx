@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import getStocks from '@/app/actions/getStocks'
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import EmptyState from '@/components/EmptyState';
@@ -6,12 +6,32 @@ import EmptyState from '@/components/EmptyState';
 import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { IStocksParams } from '../actions/getFavorites';
+import { Stock, User } from '@prisma/client';
+
+interface IStocksProps {
+  data: Stock[],
+  totalItems: number
+}
 
 const StocksPage = async () => {
 
-  const stocks = await getStocks();
-  const currentUser = await getCurrentUser();
+  const [stocks, setStocks] = useState<IStocksProps | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const stocksData = await getStocks();
+      const currentUserData = await getCurrentUser();
+      if (stocksData) {
+        setStocks(stocksData);
+      }
+      setCurrentUser(currentUserData);
+      console.log('stocks: ', stocksData);
+      console.log('currentUser: ', currentUserData);
+    };
+
+    fetchData();
+  }, []);
 
   console.log('stocks: ', stocks);
   console.log('currentUser: ', currentUser);
