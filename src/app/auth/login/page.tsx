@@ -27,7 +27,7 @@ const LoginPage = () => {
     const currentUser = await getSession();
 
     // 로그인이 되었다면 메인 페이지로 이동
-    if (currentUser && currentUser !== null) {
+    if (currentUser && currentUser !== null && window.location.pathname !== '/') {
       router.push('/'); // 로그인 페이지 경로
     }
 
