@@ -10,7 +10,7 @@ const Providers = ({ children }: { children: React.ReactNode }, session:Session 
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <SessionProvider session={session}>
+        <SessionProvider session={session} basePath="/api/auth">
           <CssBaseline />
           {children}
         </SessionProvider>          
