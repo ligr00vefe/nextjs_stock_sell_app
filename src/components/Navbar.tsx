@@ -25,36 +25,36 @@ const Navbar = () => {
   }, []);
 
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await axios.get('/api/user');
-        console.log('response_currentUser', response.data);
-        console.log('NEXTAUTH_URL', process.env.NEXTAUTH_URL);
-        console.log('NEXTAUTH_PUBLIC_URL', process.env.NEXTAUTH_PUBLIC_URL);
+  // useEffect(() => {
+  //   const fetchCurrentUser = async () => {
+  //     try {
+  //       const response = await axios.get('/api/user');
+  //       console.log('response_currentUser', response.data);
+  //       console.log('NEXTAUTH_URL', process.env.NEXTAUTH_URL);
+  //       console.log('NEXTAUTH_PUBLIC_URL', process.env.NEXTAUTH_PUBLIC_URL);
 
-        setCurrentUser(response.data);
-      } catch (error) {
-        console.error('Failed to fetch current user:', error);
-        // 적절한 오류 처리를 여기에 추가하세요.
-      }
-    };
+  //       setCurrentUser(response.data);
+  //     } catch (error) {
+  //       console.error('Failed to fetch current user:', error);
+  //       // 적절한 오류 처리를 여기에 추가하세요.
+  //     }
+  //   };
 
-    // 만약 currentUser가 없는 경우에만 API 호출
-    if (!currentUser) {
-      fetchCurrentUser();
-    }
+  //   // 만약 currentUser가 없는 경우에만 API 호출
+  //   if (!currentUser) {
+  //     fetchCurrentUser();
+  //   }
 
-    console.log('window.location.pathname: ', window.location.pathname);
-    console.log('currentPath: ', currentPath);
+  //   console.log('window.location.pathname: ', window.location.pathname);
+  //   console.log('currentPath: ', currentPath);
 
-    // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    if (!currentUser && window.location.pathname !== '/auth/login') {
-      router.push('/api/auth/signin'); // 로그인 페이지 경로
-    } 
-    console.log('currentUser', currentUser);
+  //   // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
+  //   if (!currentUser && window.location.pathname !== '/auth/login') {
+  //     router.push('/api/auth/signin'); // 로그인 페이지 경로
+  //   } 
+  //   console.log('currentUser', currentUser);
 
-  }, [currentUser, currentPath, router]); 
+  // }, [currentUser, currentPath, router]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
