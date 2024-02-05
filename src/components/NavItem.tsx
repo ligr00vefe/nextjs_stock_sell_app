@@ -13,7 +13,7 @@ interface NavItemProps {
 const NavItem = ({ mobile, currentUser }: NavItemProps) => {
   // useSession을 통해서 session 데이터 바로 확인하기
   const session = getSession();
-  console.log(session);
+  console.log('NavItem_session: ', session);
   
   // session?.user?.id
 

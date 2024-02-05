@@ -14,7 +14,8 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log({ session }, status );
+  console.log('login_session: ', { session });
+  console.log('login_session_status: ', status );
 
   const { register, handleSubmit, formState: {
     errors
