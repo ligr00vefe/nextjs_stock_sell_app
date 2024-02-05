@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { getSession, signIn } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 // import getCurrentUser from '@/app/actions/getCurrentUser';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,8 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
+  console.log({ session }, status );
 
   const { register, handleSubmit, formState: {
     errors

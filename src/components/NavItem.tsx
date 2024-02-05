@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import { signIn, signOut } from 'next-auth/react';
+import { getSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
 
@@ -12,8 +12,8 @@ interface NavItemProps {
 
 const NavItem = ({ mobile, currentUser }: NavItemProps) => {
   // useSession을 통해서 session 데이터 바로 확인하기
-  const { data: session, status } = useSession();
-  console.log({ session }, status );
+  const session = getSession();
+  console.log(session);
   
   // session?.user?.id
 
