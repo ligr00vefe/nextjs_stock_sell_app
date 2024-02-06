@@ -1,14 +1,12 @@
 'use client';
 
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import NavItem from './NavItem';
 // import SearchBox from './SearchBox';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { env } from 'process';
-import getCurrentUser from '@/app/actions/getCurrentUser';
-import { User } from '@prisma/client';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 const Navbar = () => {
   // console.log('currentUser', currentUser);
@@ -16,7 +14,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<Session | null>(null);
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -27,11 +25,13 @@ const Navbar = () => {
   //   setCurrentPath(window.location.pathname);  
   // }, []);
 
+  
 
-  useEffect(() => {
+  useEffect(() => {  
     const fetchCurrentUser = async () => {
       try {
-        const user = await getCurrentUser();
+        const user = await getSession();
+  
         if (user) {
           setCurrentUser(user);
         }
@@ -42,14 +42,17 @@ const Navbar = () => {
     };
 
     fetchCurrentUser();
+    
+    // console.log('window.location.pathname: ', window.location.pathname);
+    // console.log('currentPath: ', currentPath);
 
     // // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    // if (!currentUser && window.location.pathname !== '/auth/login') {
-    //   router.push('/api/auth/signin'); // 로그인 페이지 경로
-    // } 
-    console.log('currentUser', currentUser);
+    if (!currentUser && window.location.pathname !== '/auth/login') {
+      router.push('/api/auth/signin'); // 로그인 페이지 경로
+    } 
 
-  }, [currentUser, router]); 
+    console.log('Navbar_currentUser', currentUser);
+  }, [router]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
