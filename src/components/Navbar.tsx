@@ -52,7 +52,7 @@ const Navbar = () => {
     } 
 
     console.log('Navbar_currentUser', currentUser);
-  }, [router]); 
+  }, [window.location.pathname, router]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
