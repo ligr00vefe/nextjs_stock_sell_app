@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 // import { PrismaClient } from "@prisma/client"
 import bcrypt from "bcryptjs"
-import NetlifyProvider from "next-auth/providers/netlify";
 
 // const prisma = new PrismaClient()
 import prisma from "@/helpers/prismadb"
@@ -12,10 +11,6 @@ import prisma from "@/helpers/prismadb"
 export const authOptions: NextAuthOptions = { 
   adapter: PrismaAdapter(prisma),
   providers: [
-    NetlifyProvider({
-      clientId: process.env.NETLIFY_CLIENT_ID,
-      clientSecret: process.env.NETLIFY_CLIENT_SECRET
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!, 
       clientSecret: process.env.GOOGLE_CLIENT_SECRET! 

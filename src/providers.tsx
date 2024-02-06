@@ -1,16 +1,21 @@
 // providers.tsx
 'use client'
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { CssBaseline, StyledEngineProvider } from '@mui/material'
 import { SessionProvider } from 'next-auth/react'
 import { Session } from 'next-auth'
 
-const Providers = ({ children }: { children: React.ReactNode }, session:Session ) => {
+type IProvidersProps = {
+  children: ReactNode;
+  session?: Session | null;
+}
+
+export default function Providers({ children , session }:IProvidersProps ) {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <SessionProvider session={session} basePath="/api/auth">
+        <SessionProvider session={session}>
           <CssBaseline />
           {children}
         </SessionProvider>          
@@ -18,4 +23,3 @@ const Providers = ({ children }: { children: React.ReactNode }, session:Session 
     </>
   )
 }
-export default Providers
