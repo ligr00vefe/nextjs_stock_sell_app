@@ -13,9 +13,9 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession();
-  console.log('login_useSession: ', { session });
-  console.log('login_session_status: ', status );
+  // const { data: session, status } = useSession();
+  // console.log('login_useSession: ', { session });
+  // console.log('login_session_status: ', status );
 
   const { register, handleSubmit, formState: {
     errors
@@ -28,11 +28,11 @@ const LoginPage = () => {
 
   const loginCheck = async () => {
     const currentUser = await getSession();
-    console.log('login_getSession: ', currentUser);
+    // console.log('login_getSession: ', currentUser);
     // 로그인이 되었다면 메인 페이지로 이동
-    // if (currentUser && currentUser !== null && window.location.pathname !== '/') {
-    //   router.push('/'); // 로그인 페이지 경로
-    // }
+    if (currentUser && currentUser !== null && window.location.pathname !== '/') {
+      router.push('/'); // 로그인 페이지 경로
+    }
   }
 
   useEffect(() => { 

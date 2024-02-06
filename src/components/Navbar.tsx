@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { env } from 'process';
 import getCurrentUser from '@/app/actions/getCurrentUser';
+import { User } from '@prisma/client';
 
 const Navbar = () => {
   // console.log('currentUser', currentUser);
@@ -15,7 +16,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -30,29 +31,17 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await axios.get('/api/user');
-        console.log('response_currentUser', response.data);
-
-        setCurrentUser(response.data);
+        const user = await getCurrentUser();
+        if (user) {
+          setCurrentUser(user);
+        }
       } catch (error) {
         console.error('Failed to fetch current user:', error);
         // 적절한 오류 처리를 여기에 추가하세요.
       }
     };
 
-    // 만약 currentUser가 없는 경우에만 API 호출
-    if (!currentUser) {
-      fetchCurrentUser();
-    }
-    const fetchCurrentUser1 = async () => {
-      const currentUser1 = await getCurrentUser();
-      console.log('currentUser1: ', currentUser1);
-    }
-
-    fetchCurrentUser1();
-
-    // console.log('window.location.pathname: ', window.location.pathname);
-    // console.log('currentPath: ', currentPath);
+    fetchCurrentUser();
 
     // // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     // if (!currentUser && window.location.pathname !== '/auth/login') {
