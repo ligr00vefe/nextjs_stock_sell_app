@@ -10,6 +10,6 @@ declare global {
 const client = globalThis.prisma || new PrismaClient();
 
 // development 환경에서만 동작하도록 조건처리
-// if (process.env.NODE_ENV !== 'production') globalThis.prisma = client;
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = client;
 
 export default client

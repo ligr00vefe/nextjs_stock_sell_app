@@ -12,6 +12,7 @@ export default async function getCurrentUser() {
     // console.log('session: ', session);
     // session.user에 email이 없을 경우
     if (!session?.user?.email) {
+      // console.log('1');
       return null;
     }
     // console.log('session.user.email: ', session.user.email);
@@ -24,6 +25,7 @@ export default async function getCurrentUser() {
     });
     // console.log('getCurrentUser: ', currentUser);
     if (!currentUser) {
+      // console.log('2');
       return null;
     }
 

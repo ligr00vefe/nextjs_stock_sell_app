@@ -1,6 +1,5 @@
-import { getSession } from '@/app/actions/getCurrentUser';
 import { User } from '@prisma/client';
-import { signIn, signOut } from 'next-auth/react';
+import { getSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
 
@@ -13,13 +12,14 @@ interface NavItemProps {
 
 const NavItem = ({ mobile, currentUser }: NavItemProps) => {
   // useSession을 통해서 session 데이터 바로 확인하기
-  const session = getSession();
-  console.log('NavItem_session: ', session);
+  // const { data: session, status } = useSession();
+  // console.log({ session }, status );
+  // console.log('NavItem_session: ', session);
   
   // session?.user?.id
 
   // getServerSession을 모듈화하여 session 데이터 확인
-  // console.log('NavItem_currentUser', currentUser);      
+  console.log('NavItem_currentUser', currentUser);      
 
   return (
     <ul className={`text-md justify-center flex gap-4 w-full items-center ${mobile && "flex-col h-full pt-2 pb-5"}`}>

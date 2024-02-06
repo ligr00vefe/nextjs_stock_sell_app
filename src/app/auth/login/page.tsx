@@ -26,18 +26,18 @@ const LoginPage = () => {
     }
   });
 
-  // const loginCheck = async () => {
-  //   const currentUser = await getSession();
-  //   console.log('login_getSession: ', { currentUser });
-  //   // 로그인이 되었다면 메인 페이지로 이동
-  //   if (currentUser && currentUser !== null && window.location.pathname !== '/') {
-  //     router.push('/'); // 로그인 페이지 경로
-  //   }
-  // }
+  const loginCheck = async () => {
+    const currentUser = await getSession();
+    console.log('login_getSession: ', currentUser);
+    // 로그인이 되었다면 메인 페이지로 이동
+    // if (currentUser && currentUser !== null && window.location.pathname !== '/') {
+    //   router.push('/'); // 로그인 페이지 경로
+    // }
+  }
 
-  // useEffect(() => { 
-  //   loginCheck();
-  // }, []);
+  useEffect(() => { 
+    loginCheck();
+  }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (body) => {
     setIsLoading(true);
