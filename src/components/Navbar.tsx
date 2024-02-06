@@ -56,6 +56,21 @@ const Navbar = () => {
 
   // }, [currentUser, currentPath, router]); 
 
+  const crypto = require('crypto');
+
+// 무작위 문자열 생성 함수
+function generateRandomString(length:any) {
+    return crypto.randomBytes(length).toString('hex');
+}
+
+// 생성할 무작위 문자열의 길이 지정
+const length = 64; // 예시로 64글자로 설정
+
+// 무작위 문자열 생성
+const randomString = generateRandomString(length);
+
+console.log('randomString: ', randomString); // 생성된 무작위 문자열 출력
+
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
       <div className='flex items-center justify-between mx-5 sm:mx-10 lg:mx-20'>
