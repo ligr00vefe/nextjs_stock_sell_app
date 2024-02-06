@@ -1,5 +1,6 @@
+import { getSession } from '@/app/actions/getCurrentUser';
 import { User } from '@prisma/client';
-import { getSession, signIn, signOut } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
 
