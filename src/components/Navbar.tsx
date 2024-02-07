@@ -26,16 +26,17 @@ const Navbar = () => {
   // }, []);
 
   useEffect(() => {  
-    // const fetchCurrentUser = async () => {
-    //   try {
-    //     const user = await getSession();  
-    //       setCurrentUser(user);   
-    //   } catch (error) {
-    //     console.error('Failed to fetch current user:', error);
-    //   }
-    // };
+    // NavItem props용 currentUser 생성
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getSession();  
+          setCurrentUser(user);   
+      } catch (error) {
+        console.error('Failed to fetch current user:', error);
+      }
+    };
 
-    // fetchCurrentUser();
+    fetchCurrentUser();
     
     // console.log('window.location.pathname: ', window.location.pathname);
     // console.log('currentPath: ', currentPath);
