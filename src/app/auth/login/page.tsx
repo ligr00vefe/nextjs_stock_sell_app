@@ -28,7 +28,7 @@ const LoginPage = () => {
 
 
   useEffect(() => { 
-    if (session && router.pathname !== '/') {
+    if (session) {
       router.push('/'); // 로그인 페이지 경로
     }
   }, [router, session]);

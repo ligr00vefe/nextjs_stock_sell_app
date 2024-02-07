@@ -28,10 +28,16 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
     try {
       setLoading(true);      
       
-      const stocks = await getFavorites(searchParams);
-      const currentUser = await getCurrentUser();
-      setStocks(stocks);
-      setCurrentUser(currentUser);
+      const stocksResult = await getFavorites(searchParams);
+      const currentUserResult = await getCurrentUser();
+
+      if (!stocksResult || !currentUserResult) {
+        throw new Error('Failed to fetch data');
+      }
+
+      setStocks(stocksResult);
+      setCurrentUser(currentUserResult);
+
     } catch (error) {
       console.error('Error fetching data: ', error);
     } finally {
@@ -41,7 +47,7 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
 
   useEffect(() => {  
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (loading) {
     return <div>Loading...</div>;
