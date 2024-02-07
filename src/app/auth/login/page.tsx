@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 // import getCurrentUser from '@/app/actions/getCurrentUser';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   // console.log('login_useSession: ', { session });
   // console.log('login_session_status: ', status );
 
@@ -26,18 +26,12 @@ const LoginPage = () => {
     }
   });
 
-  const loginCheck = async () => {
-    const currentUser = await getSession();
-    // console.log('login_getSession: ', currentUser);
-    // 로그인이 되었다면 메인 페이지로 이동
-    if (currentUser && currentUser !== null && window.location.pathname !== '/') {
-      router.push('/'); // 로그인 페이지 경로
-    }
-  }
 
   useEffect(() => { 
-    loginCheck();
-  }, [window.location.pathname]);
+    if (session) {
+      router.push('/'); // 로그인 페이지 경로
+    }
+  }, [router, session]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (body) => {
     setIsLoading(true);

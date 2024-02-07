@@ -6,7 +6,7 @@ import NavItem from './NavItem';
 // import SearchBox from './SearchBox';
 import { getSession, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   // console.log('currentUser', currentUser);
@@ -40,14 +40,12 @@ const Navbar = () => {
     // console.log('window.location.pathname: ', window.location.pathname);
     // console.log('currentPath: ', currentPath);
 
-    // // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
-    if (typeof window !== "undefined") {
-      // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지가 아닌 경우 로그인 페이지로 리다이렉트
-      if (status === "unauthenticated" && router.pathname !== '/auth/login') {
-        router.push('/api/auth/signin');
-      }
+    // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
+    // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지가 아닌 경우 로그인 페이지로 리다이렉트
+    if (status === "unauthenticated" && window.location.pathname !== '/auth/login') {
+      router.push('/api/auth/signin');
     }
-  }, [status, router]); 
+  }, [status, window.location.pathname]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
