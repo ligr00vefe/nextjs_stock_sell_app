@@ -45,7 +45,7 @@ const Navbar = () => {
     if (status === "unauthenticated" && window.location.pathname !== '/auth/login') {
       router.push('/api/auth/signin');
     }
-  }, [status, window.location.pathname]); 
+  }, [status, router]); 
 
   return (
     <nav className='relative z-10 w-full bg-blue-500 text-white py-2'>
