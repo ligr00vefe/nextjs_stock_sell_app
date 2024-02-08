@@ -24,13 +24,13 @@ const NavItem = ({ mobile, currentUser }: NavItemProps) => {
 
   return (
     <ul className={`text-md justify-center flex gap-4 w-full items-center ${mobile && "flex-col h-full pt-2 pb-5"}`}>
-      <li className='py-2 text-center cursor-pointer'><Link href="/stocks">관심종목</Link></li>
-      <li className='py-2 text-center cursor-pointer'><Link href="/favorites">즐겨찾기</Link></li>
-      <li className='py-2 text-center cursor-pointer'><Link href="/sell">매도종목</Link></li>
+      <li className='py-1 text-center cursor-pointer border-b-4 border-transparent hover:border-white'><Link href="/stocks">관심종목</Link></li>
+      <li className='py-1 text-center cursor-pointer border-b-4 border-transparent hover:border-white'><Link href="/favorites">즐겨찾기</Link></li>
+      <li className='py-1 text-center cursor-pointer border-b-4 border-transparent hover:border-white'><Link href="/sells">매도종목</Link></li>
       {currentUser ?      
-        <li className='py-2 text-center cursor-pointer'><button onClick={() => signOut()}>로그아웃</button></li>
+        <li className='py-1 text-center cursor-pointer border-b-4 border-transparent hover:border-white'><button onClick={() => signOut()}>로그아웃</button></li>
         :
-        <li className='py-2 text-center cursor-pointer'><button onClick={() => signIn()}>로그인</button></li>
+        <li className='py-1 text-center cursor-pointer border-b-4 border-transparent hover:border-white'><button onClick={() => signIn()}>로그인</button></li>
       }
     </ul>
   )

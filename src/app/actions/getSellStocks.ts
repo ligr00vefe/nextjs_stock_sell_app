@@ -16,15 +16,7 @@ export default async function getSellStocks() {
 
     if (currentUser?.favoriteIds) {
       // 사용자 ID로 사용자의 favoriteIds 필드에 포함된 주식만 가져오도록 수정
-      const user = await prisma.user.findUnique({
-        where: { id: currentUser.id },
-        select: { favoriteIds: true }
-      });
-
-      if (user) {
-        query.stockId = { in: user.favoriteIds };
-      }
-      // console.log('query.stockId: ', query.stockId);
+      query.stockId = { in: currentUser.favoriteIds };
     }
 
     const totalItems = await prisma.favorite.count({
@@ -40,7 +32,7 @@ export default async function getSellStocks() {
     })
 
     const newFavorites = favorites.filter(favorite => {
-      if (favorite.price !== null && favorite.desired_selling_price !== null) {
+      if (favorite.price !== null && favorite.price > 0 && favorite.desired_selling_price !== null && favorite.desired_selling_price > 0) {
         // favorite.price가 favorite.desired_selling_price보다 크거나 같은지를 체크하여 필터링
         return favorite.price >= favorite.desired_selling_price;
       }
