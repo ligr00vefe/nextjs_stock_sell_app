@@ -20,7 +20,10 @@ const SwitchBtn = ({ currentUser, stockId, stockData }:ISwitchBtnProps) => {
     currentUser,
     stockData
   });
-
+  console.log('btn_hasFavorited: ', hasFavorited);
+  console.log('btn_stockId: ', stockId);
+  console.log('btn_currentUser: ', currentUser);
+  console.log('btn_stockData: ', stockData);
 
   return (
     <>

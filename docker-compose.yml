@@ -9,4 +9,4 @@ services:
             POSTGRES_USER: "postgres"
             POSTGRES_PASSWORD: "cb2ca4*G4bB*ffCGC*14E25dC6*D3g5c"
         volumes:
-            - ./data:/var/lib/postgresql/data/pgdata
+            - ./data:/var/lib/postgresql/data/

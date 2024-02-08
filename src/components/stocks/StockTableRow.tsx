@@ -7,7 +7,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import SwitchBtn from '@/components/SwitchBtn';
+import SwitchBtn from '@/components/stocks/SwitchBtn';
 import { IconButton, Input, TextField } from '@mui/material';
 import SavingsIcon from '@mui/icons-material/Savings';
 import { toast } from 'react-toastify';
@@ -31,8 +31,8 @@ const StockTableRow = ({
   readonly
 }: IStockTableRowProps) => {
   
-  // console.log('currentUser: ', currentUser);
-  // console.log('stock: ', stock);
+  console.log('row_currentUser: ', currentUser);
+  console.log('row_stock: ', stock);
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();  
