@@ -22,9 +22,9 @@ const StocksPage = () => {
         const response = await axios.get('/api/stocks'); // GET 요청을 보냅니다.
         const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
 
-        console.log('response: ', response);
-        console.log('data: ', data);
-        console.log('currentUser: ', currentUser);
+        // console.log('response: ', response);
+        // console.log('data: ', data);
+        // console.log('currentUser: ', currentUser);
         setStocks(data);
         setCurrentUser(currentUser);
       } catch (err) {
