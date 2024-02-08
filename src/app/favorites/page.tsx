@@ -23,10 +23,7 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  
-
   useEffect(() => {  
-
     const fetchData = async () => {
       try {
         setLoading(true);      
