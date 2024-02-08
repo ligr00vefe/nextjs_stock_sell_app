@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
@@ -7,8 +5,8 @@ import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Stock, User } from '@prisma/client';
-import axios from 'axios';
-import { env } from 'process';
+import getCurrentUser from '../actions/getCurrentUser';
+import getStocks from '../actions/getStocks';
 
 interface IStocksProps {
   data: Stock[],
@@ -25,10 +23,10 @@ const StocksPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/stocks'); // GET 요청을 보냅니다.
-        const { stocks, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
-        setStocks(stocks);
-        setCurrentUser(currentUser);
+        const stocksData = await getStocks();
+        const currentUserData = await getCurrentUser();
+        setStocks(stocksData);
+        setCurrentUser(currentUserData);
       } catch (err) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
         console.error(err);
@@ -38,8 +36,8 @@ const StocksPage = () => {
     };
 
     fetchData();
-    console.log('stock_currentUser: ', currentUser);
-    console.log('stock_stock: ', stocks);
+    // console.log('stock_currentUser: ', currentUser);
+    // console.log('stock_stock: ', stocks);
   }, []);
 
   if (isLoading) {

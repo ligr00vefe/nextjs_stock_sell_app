@@ -12,42 +12,46 @@ interface IStocksProps {
   searchParams: IStocksParams
 }
 
-export interface IFavoritesPageProps {
-  stocks: { data: Favorite[] };
-  currentUser: User | null;
+interface IFavoritesPageProps {
+  data: Favorite[],
+  totalItems: number
 }
 
 const FavoritesPage = ({searchParams}: IStocksProps) => {
 
-  const [stocks, setStocks] = useState<{ data: Favorite[] }>({ data: [] });
+  const [stocks, setStocks] = useState<IFavoritesPageProps | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  // console.log('stocks: ', stocks);
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);      
-      
-      const stocksResult = await getFavorites(searchParams);
-      const currentUserResult = await getCurrentUser();
-
-      if (!stocksResult || !currentUserResult) {
-        throw new Error('Failed to fetch data');
-      }
-
-      setStocks(stocksResult);
-      setCurrentUser(currentUserResult);
-
-    } catch (error) {
-      console.error('Error fetching data: ', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [searchParams]);
+  
 
   useEffect(() => {  
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);      
+        
+        const stocksResult = await getFavorites(searchParams);
+        const currentUserResult = await getCurrentUser();
+  
+        if (!stocksResult || !currentUserResult) {
+          throw new Error('Failed to fetch data');
+        }
+  
+        setStocks(stocksResult);
+        setCurrentUser(currentUserResult);
+        
+        console.log('favorites_stocks: ', stocks);
+  
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
-  }, [fetchData]);
+  }, [searchParams]);
 
   if (loading) {
     return <div>Loading...</div>;
