@@ -1,45 +1,31 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { IStocksParams } from '@/app/actions/getFavorites'
-import getCurrentUser from '@/app/actions/getCurrentUser';
+import { FavoritesData, IStocksParams } from '@/app/actions/getFavorites'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import getSellStocks from '@/app/actions/getSellStocks';
 import { Favorite, User } from '@prisma/client';
+import axios from 'axios';
 
-interface StocksData {
-  data: Favorite[];
-  totalItems: number;
-}
+const SellsPage = () => {
 
-const SellListPage = () => {
-
-  const [stocks, setStocks] = useState<StocksData | null>(null);
+  const [stocks, setStocks] = useState<Favorite[] | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const searchParams: IStocksParams = {
-        symbol: '',
-        company: '',
-        currency: '',
-        price: 0,
-        desired_selling_price: 0,
-        userId: '',
-        stockId: ''
-      };
-      const fetchedStocks = await getSellStocks(searchParams);
-      setStocks(fetchedStocks);
-      const fetchedCurrentUser = await getCurrentUser();
-      setCurrentUser(fetchedCurrentUser);
+      const response = await axios.get<FavoritesData>('/api/stocks'); // GET 요청을 보냅니다.
+      const { data, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+
+      setStocks(data);
+      setCurrentUser(currentUser);
     };
 
     fetchData();
   }, []);
 
-  if (!stocks || stocks.data.length === 0) {
+  if (!stocks || stocks.length === 0) {
     return (
       <EmptyState title="조건에 맞는 매도 종목이 없습니다." subtitle="희망 매도가를 수정해주세요." />
     )
@@ -68,7 +54,7 @@ const SellListPage = () => {
           </tr>           
         </thead>
         <tbody>
-          {stocks.data.map((stock) => (
+          {stocks.map((stock) => (
             <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly />           
           ))}
         </tbody>          
@@ -77,4 +63,4 @@ const SellListPage = () => {
   )
 }
 
-export default SellListPage
+export default SellsPage

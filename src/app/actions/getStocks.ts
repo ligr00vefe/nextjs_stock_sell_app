@@ -22,7 +22,7 @@ export default async function getStocks(): Promise<StocksData> {
     });
 
     // 테이블의 데이터를 여러개 가져올 때 findMany() 사용    
-    const stock = await prisma.stock.findMany({
+    const stocks = await prisma.stock.findMany({
       where: query,
       orderBy: {
         createdAt: 'desc'
@@ -30,7 +30,7 @@ export default async function getStocks(): Promise<StocksData> {
     })
 
     return {
-      data: stock,
+      data: stocks,
       currentUser,
       totalItems
     }

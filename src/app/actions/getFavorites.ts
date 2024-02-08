@@ -18,16 +18,13 @@ export interface FavoritesData {
   totalItems: number
 }
 
-
-export default async function getFavorites(params: IStocksParams): Promise<FavoritesData> {
+export default async function getFavorites(): Promise<FavoritesData> {
 
   const currentUser = await getCurrentUser();
 
   // console.log('favorites_currentUser', currentUser);
   
   try {
-
-    const { symbol, currency, company, price, desired_selling_price } = params
     
     let query: any = {};
     
@@ -54,7 +51,7 @@ export default async function getFavorites(params: IStocksParams): Promise<Favor
     });
 
     // 테이블의 데이터를 여러개 가져올 때 findMany() 사용    
-    const favorite = await prisma.favorite.findMany({
+    const favorites = await prisma.favorite.findMany({
       where: query,
       orderBy: {
         createdAt: 'desc'
@@ -62,7 +59,7 @@ export default async function getFavorites(params: IStocksParams): Promise<Favor
     })
 
     return {
-      data: favorite,
+      data: favorites,
       currentUser,
       totalItems
     }

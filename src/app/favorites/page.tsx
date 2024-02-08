@@ -4,16 +4,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { User } from '@prisma/client';
-import getFavorites, { FavoritesData, IStocksParams } from '@/app/actions/getFavorites';
+import { Favorite, User } from '@prisma/client';
+import { FavoritesData } from '@/app/actions/getFavorites';
+import axios from 'axios';
 
-interface IStocksProps {
-  searchParams: IStocksParams
-}
+const FavoritesPage = () => {
 
-const FavoritesPage = ({searchParams}: IStocksProps) => {
-
-  const [stocks, setStocks] = useState<FavoritesData | null>(null);
+  const [stocks, setStocks] = useState<Favorite[] | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,17 +19,12 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
       try {
         setLoading(true);      
         
-        const resultData = await getFavorites(searchParams);
+        const response = await axios.get<FavoritesData>('/api/stocks'); // GET 요청을 보냅니다.
+        const { data, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
-        if (!resultData) {
-          throw new Error('Failed to fetch data');
-        }
-  
-        setStocks(resultData);
-        setCurrentUser(resultData.currentUser);
-        
-        console.log('favorites_stocks: ', stocks);
-  
+        setStocks(data);
+        setCurrentUser(currentUser);
+          
       } catch (error) {
         console.error('Error fetching data: ', error);
       } finally {
@@ -41,13 +33,13 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
     };
 
     fetchData();
-  }, [searchParams, stocks]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!stocks || stocks.data!.length === 0) {
+  if (!stocks || stocks.length === 0) {
     return (
       <EmptyState title="즐겨찾기된 종목이 없습니다." subtitle="종목을 즐겨찾기 해 주세요." />
     )
@@ -73,7 +65,7 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
           </tr>           
         </thead>
         <tbody>
-          {stocks.data!.map((stock) => (
+          {stocks.map((stock) => (
             <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly={false} />           
           ))}
         </tbody>          

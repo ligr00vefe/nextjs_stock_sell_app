@@ -1,12 +1,11 @@
-import { NextResponse } from "next/server";
-import getFavorites from "@/app/actions/getFavorites";
+import getSellStocks from '@/app/actions/getSellStocks';
+import { NextResponse } from 'next/server';
 
-// 즐겨찾기 가져오기
 // GET 요청 처리
 export async function GET() {
   try {
     // 데이터 가져오기
-    const resultData = await getFavorites();
+    const resultData = await getSellStocks();
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });

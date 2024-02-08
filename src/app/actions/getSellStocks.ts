@@ -1,14 +1,11 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import { IStocksParams } from "@/app/actions/getFavorites";
 
-export default async function getSellStocks(params: IStocksParams) {
+export default async function getSellStocks() {
 
   const currentUser = await getCurrentUser();
 
   try {
-
-    const { price, desired_selling_price } = params
     
     let query: any = {};
          
@@ -28,12 +25,6 @@ export default async function getSellStocks(params: IStocksParams) {
         query.stockId = { in: user.favoriteIds };
       }
       // console.log('query.stockId: ', query.stockId);
-    }
-
-    // price가 desired_selling_price보다 큰 값을 가져오는 조건 추가
-    if (price && desired_selling_price) {
-      query.price = { gte: desired_selling_price };
-      query.desired_selling_price = desired_selling_price;
     }
 
     const totalItems = await prisma.favorite.count({
