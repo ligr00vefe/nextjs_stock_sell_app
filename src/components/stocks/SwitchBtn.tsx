@@ -5,7 +5,7 @@ import useFavorite from '@/app/hooks/useFavorite';
 import { Switch, styled } from "@mui/material";
 import { User } from "@prisma/client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface ISwitchBtnProps {
   stockId: string;
@@ -24,6 +24,14 @@ const SwitchBtn = ({ currentUser, stockId, stockData }:ISwitchBtnProps) => {
   console.log('btn_stockId: ', stockId);
   console.log('btn_currentUser: ', currentUser);
   console.log('btn_stockData: ', stockData);
+
+   // useEffect를 사용하여 의존성이 변경될 때마다 필요한 로직을 재실행합니다.
+   useEffect(() => {
+    // stockId, currentUser, stockData가 변경될 때 실행할 로직을 추가할 수 있습니다.
+    // 예를 들어, 특정 API 호출 또는 상태 업데이트 등
+    console.log("StockId, currentUser, stockData가 변경되었습니다.");
+  }, [stockId, currentUser, stockData]); // 의존성 배열
+
 
   return (
     <>

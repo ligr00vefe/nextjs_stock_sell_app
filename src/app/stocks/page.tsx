@@ -38,6 +38,8 @@ const StocksPage = () => {
     };
 
     fetchData();
+    console.log('stock_currentUser: ', currentUser);
+    console.log('stock_stock: ', stocks);
   }, []);
 
   if (isLoading) {
