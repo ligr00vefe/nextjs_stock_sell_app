@@ -19,8 +19,8 @@ const FavoritesPage = () => {
       try {
         setLoading(true);      
         
-        const response = await axios.get<FavoritesData>('/api/stocks'); // GET 요청을 보냅니다.
-        const { data, currentUser } = response.data; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        const response = await axios.get('/api/stocks'); // GET 요청을 보냅니다.
+        const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
         setStocks(data);
         setCurrentUser(currentUser);

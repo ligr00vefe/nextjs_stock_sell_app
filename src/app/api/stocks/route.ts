@@ -9,6 +9,9 @@ export async function GET() {
     // 데이터 가져오기
     const resultData = await getStocks();
     console.log('stock_route_resultData: ', resultData);
+    // console.log('stock_route_resultData.data: ', resultData.data);
+    // console.log('stock_route_resultData.currentUser: ', resultData.currentUser);
+    // console.log('stock_route_resultData.totalItems: ', resultData.totalItems);
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });

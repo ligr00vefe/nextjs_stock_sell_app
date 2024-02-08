@@ -11,7 +11,7 @@ export interface StocksData {
 export default async function getStocks(): Promise<StocksData> {
 
   const currentUser = await getCurrentUser();
-  console.log('getStock_currentUser_resultData: ', currentUser);
+  // console.log('getStock_currentUser_resultData: ', currentUser);
 
   try {
    
