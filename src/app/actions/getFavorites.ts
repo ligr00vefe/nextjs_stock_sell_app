@@ -1,5 +1,6 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import { Favorite, User } from "@prisma/client";
 
 export interface IStocksParams {
   symbol?: string;
@@ -11,7 +12,14 @@ export interface IStocksParams {
   stockId?: string;
 }
 
-export default async function getFavorites(params: IStocksParams) {
+export interface FavoritesData {
+  data: Favorite[] | null;
+  currentUser: User | null;
+  totalItems: number
+}
+
+
+export default async function getFavorites(params: IStocksParams): Promise<FavoritesData> {
 
   const currentUser = await getCurrentUser();
 
@@ -55,6 +63,7 @@ export default async function getFavorites(params: IStocksParams) {
 
     return {
       data: favorite,
+      currentUser,
       totalItems
     }
 

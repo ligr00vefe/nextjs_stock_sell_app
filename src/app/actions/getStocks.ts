@@ -1,12 +1,16 @@
 import prisma from "@/helpers/prismadb";
-import { Stock } from "@prisma/client";
+import { Stock, User } from "@prisma/client";
+import getCurrentUser from "./getCurrentUser";
 
-interface StocksData {
-  data: Stock[];
+export interface StocksData {
+  data: Stock[] | null;
+  currentUser: User | null;
   totalItems: number;
 }
 
 export default async function getStocks(): Promise<StocksData> {
+
+  const currentUser = await getCurrentUser();
 
   try {
    
@@ -27,6 +31,7 @@ export default async function getStocks(): Promise<StocksData> {
 
     return {
       data: stock,
+      currentUser,
       totalItems
     }
 

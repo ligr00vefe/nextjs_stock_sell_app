@@ -6,18 +6,12 @@ import EmptyState from '@/components/EmptyState';
 import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Stock, User } from '@prisma/client';
-import getCurrentUser from '../actions/getCurrentUser';
-import getStocks from '../actions/getStocks';
-
-interface IStocksProps {
-  data: Stock[],
-  totalItems: number
-}
+import { User } from '@prisma/client';
+import getStocks, { StocksData } from '@/app/actions/getStocks';
 
 const StocksPage = () => {
 
-  const [stocks, setStocks] = useState<IStocksProps | null>(null);
+  const [stocks, setStocks] = useState<StocksData | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
@@ -25,10 +19,9 @@ const StocksPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const stocksData = await getStocks();
-        const currentUserData = await getCurrentUser();
-        setStocks(stocksData);
-        setCurrentUser(currentUserData);
+        const resultData = await getStocks();
+        setStocks(resultData);
+        setCurrentUser(resultData.currentUser);
       } catch (err) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
         console.error(err);
@@ -50,7 +43,7 @@ const StocksPage = () => {
     return <div>오류: {error}</div>; // 에러 메시지 표시
   }
 
-  if (!stocks || stocks.data.length === 0) {
+  if (!stocks || stocks.data!.length === 0) {
     return (
       <div className='flex flex-col items-center justify-start w-full h-full py-[120px]'>
         <div className='flex w-[80vw] max-w-[1400px] justify-end pb-3'>
@@ -83,7 +76,7 @@ const StocksPage = () => {
             </tr>           
           </thead>
           <tbody>
-            {stocks.data.map((stock) => (
+            {stocks.data!.map((stock) => (
               <StockTableRow stock={{ ...stock, stockId: stock.id }} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={true} hasSellingPrice={false} readonly={false} />           
             ))}
           </tbody>          
