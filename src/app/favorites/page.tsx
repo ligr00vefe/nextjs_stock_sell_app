@@ -48,7 +48,7 @@ const FavoritesPage = ({searchParams}: IStocksProps) => {
     };
 
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, stocks]);
 
   if (loading) {
     return <div>Loading...</div>;
