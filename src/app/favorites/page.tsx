@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Favorite, User } from '@prisma/client';
-import { FavoritesData } from '@/app/actions/getFavorites';
 import axios from 'axios';
 
 const FavoritesPage = () => {

@@ -21,11 +21,10 @@ export interface FavoritesData {
 export default async function getFavorites(): Promise<FavoritesData> {
 
   const currentUser = await getCurrentUser();
-
-  // console.log('favorites_currentUser', currentUser);
+  console.log('favorites_currentUser', currentUser);
   
   try {
-    
+     
     let query: any = {};
     
     if (currentUser?.id) {
@@ -35,13 +34,15 @@ export default async function getFavorites(): Promise<FavoritesData> {
 
     if (currentUser?.favoriteIds) {
       // 사용자 ID로 사용자의 favoriteIds 필드에 포함된 주식만 가져오도록 수정
-      query.stockId = { in: currentUser.favoriteIds };
+      const user = await prisma.user.findUnique({
+        where: { id: currentUser.id },
+        select: { favoriteIds: true }
+      });
+
+      if (user) {
+        query.stockId = { in: user.favoriteIds };
+      }
     }
-      
-    // totalItems 전체 아이템 개수
-    const totalItems = await prisma.favorite.count({
-      where: query
-    });
 
     // 테이블의 데이터를 여러개 가져올 때 findMany() 사용    
     const favorites = await prisma.favorite.findMany({
@@ -52,6 +53,11 @@ export default async function getFavorites(): Promise<FavoritesData> {
     })
 
     // console.log('favorites_all', favorites);
+
+    // totalItems 전체 아이템 개수
+    const totalItems = await prisma.favorite.count({
+      where: query
+    });
 
     return {
       data: favorites,

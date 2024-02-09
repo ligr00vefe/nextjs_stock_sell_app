@@ -1,6 +1,6 @@
 import prisma from "@/helpers/prismadb";
 import { Stock, User } from "@prisma/client";
-import getCurrentUser from "./getCurrentUser";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export interface StocksData {
   data: Stock[] | null;

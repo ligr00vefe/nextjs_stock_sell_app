@@ -9,12 +9,12 @@ import { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  // console.log('currentUser', currentUser);
 
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<Session | null>(null);
   const { data: session, status } = useSession();
+  // console.log('Navbar_status', status);
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -30,7 +30,9 @@ const Navbar = () => {
     const fetchCurrentUser = async () => {
       try {
         const user = await getSession();  
-          setCurrentUser(user);   
+        // console.log('Navbar_user: ', user);
+        setCurrentUser(user);   
+        
       } catch (error) {
         console.error('Failed to fetch current user:', error);
       }

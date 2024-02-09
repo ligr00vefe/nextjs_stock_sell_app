@@ -31,8 +31,8 @@ const StockTableRow = ({
   readonly
 }: IStockTableRowProps) => {
   
-  console.log('row_currentUser: ', currentUser);
-  console.log('row_stock: ', stock);
+  // console.log('row_currentUser: ', currentUser);
+  // console.log('row_stock: ', stock);
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();  

@@ -71,7 +71,7 @@ export const authOptions: NextAuthOptions = {
     // 유효기간(30 days) = 30 * 24 * 60 * 60
     // 유효기간(1 days) = 24 * 60 * 60
     // 유효기간(1 hour) = 60 * 60
-    maxAge: 60 * 60
+    maxAge: 30 * 24 * 60 * 60
   },
   pages: {
     // 로그인 페이지 경로 지정
