@@ -1,6 +1,7 @@
 import prisma from "@/helpers/prismadb";
-import { Favorite, User } from "@prisma/client";
-import { getSession } from "next-auth/react";
+import { Favorite } from "@prisma/client";
+import { Session } from "next-auth";
+import { getSession } from "./getCurrentUser";
 
 export interface IStocksParams {
   symbol?: string;
@@ -14,14 +15,14 @@ export interface IStocksParams {
 
 export interface FavoritesData {
   data: Favorite[] | null;
-  currentUser: User | null;
+  currentSession: Session | null;
   totalItems: number;
 }
 
 export default async function getFavorites(): Promise<FavoritesData> {
 
   const currentSession = await getSession();
-  // console.log('favorites_currentUser', currentUser);
+  console.log('favorites_currentSession', currentSession);
   
   try {
      
