@@ -1,10 +1,10 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { FavoritesData } from "@/app/actions/getFavorites";
-import { User } from "@prisma/client";
 
+export default async function getSellStocks(): Promise<FavoritesData> {
 
-export default async function getSellStocks(currentUser: User | null): Promise<FavoritesData> {
+  const currentUser = await getCurrentUser();
 
   try {
     
