@@ -4,11 +4,10 @@ import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import { User } from '@prisma/client';
-import getCurrentUser from '../actions/getCurrentUser';
 import { getSession } from 'next-auth/react';
 import axios from 'axios';
 
-const CurrentUserPage = () => {
+const UserPage = () => {
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
@@ -23,7 +22,7 @@ const CurrentUserPage = () => {
 
         const response = await axios.get('/api/user'); // GET 요청을 보냅니다.
         console.log('response: ', response);
-        
+
         setCurrentUser(response.data.currentUser);
           
       } catch (error) {
@@ -65,4 +64,4 @@ const CurrentUserPage = () => {
   }  
 }
 
-export default CurrentUserPage
+export default UserPage
