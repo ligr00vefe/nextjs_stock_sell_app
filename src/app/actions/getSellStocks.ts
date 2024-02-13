@@ -1,6 +1,6 @@
 import prisma from "@/helpers/prismadb";
-import { getSession } from "@/app/actions/getCurrentUser";
 import { FavoritesData } from "@/app/actions/getFavorites";
+import { getSession } from "next-auth/react";
 
 export default async function getSellStocks(): Promise<FavoritesData> {
 
