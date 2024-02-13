@@ -8,6 +8,8 @@ declare module "next-auth" {
       id?: string;
       // user가 있다면 role도 있을 수 있음
       role?: string;
+      // user가 있다면 favoriteIds도 있을 수 있음
+      favoriteIds?: string[];
     } & DefaultSession["user"];
   }
 }
