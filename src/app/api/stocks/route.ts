@@ -7,7 +7,8 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     // 데이터 가져오기
-    const resultData = await getStocks();
+    const currentUser = await getCurrentUser();
+    const resultData = await getStocks(currentUser);
     // console.log('stock_route_resultData: ', resultData);
     // console.log('stock_route_resultData.data: ', resultData.data);
     // console.log('stock_route_resultData.currentUser: ', resultData.currentUser);
