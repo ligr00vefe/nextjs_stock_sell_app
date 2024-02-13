@@ -9,7 +9,7 @@ export async function GET() {
     const resultData = await getFavorites();
     console.log('favorites_route_resultData: ', resultData);
     // console.log('favorites_route_resultData.data: ', resultData.data);
-    // console.log('favorites_route_resultData.currentUser: ', resultData.currentUser);
+    // console.log('favorites_route_resultData.currentSession: ', resultData.currentSession);
     // console.log('favorites_route_resultData.totalItems: ', resultData.totalItems);
 
     // 성공적인 응답 반환
