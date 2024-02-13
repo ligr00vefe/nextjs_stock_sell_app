@@ -1,7 +1,7 @@
 import prisma from "@/helpers/prismadb";
 import { Favorite } from "@prisma/client";
 import { Session } from "next-auth";
-import { getSession } from "./getCurrentUser";
+import { getSession } from "@/app/actions/getCurrentUser";
 
 export interface IStocksParams {
   symbol?: string;
