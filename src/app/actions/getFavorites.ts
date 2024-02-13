@@ -18,10 +18,7 @@ export interface FavoritesData {
   totalItems: number;
 }
 
-export default async function getFavorites(): Promise<FavoritesData> {
-
-  const currentUser = await getCurrentUser();
-  // console.log('favorites_currentUser', currentUser);
+export default async function getFavorites(currentUser: User | null): Promise<FavoritesData> {
   
   try {
      

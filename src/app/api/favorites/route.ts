@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import getFavorites from "@/app/actions/getFavorites";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
 export async function GET() {
   try {
     // 데이터 가져오기
-    const resultData = await getFavorites();
+    const currentUser = await getCurrentUser();
+    const resultData = await getFavorites(currentUser);
     // console.log('favorites_route_resultData: ', resultData);
     // console.log('favorites_route_resultData.data: ', resultData.data);
     // console.log('favorites_route_resultData.currentUser: ', resultData.currentUser);

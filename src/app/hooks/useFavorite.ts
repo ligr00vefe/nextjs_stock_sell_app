@@ -50,7 +50,7 @@ const useFavorite = ({
 
       if (hasFavorited) {
         // 즐겨찾기가 되어있는데 버튼을 한번 더 누를 경우 delete경로로 axios 전송
-          request = () => axios.delete(`/api/favorites/${stockId}`);
+        request = () => axios.delete(`/api/favorites/${stockId}`);
       } else {
         // 즐겨찾기를 추가하려는 경우 post로 axios 전송
         request = () => axios.post(`/api/favorites/${stockId}`, stockData);
