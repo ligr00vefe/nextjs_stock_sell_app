@@ -31,8 +31,7 @@ const Navbar = () => {
       try {
         const user = await getSession();  
         // console.log('Navbar_user: ', user);
-        setCurrentUser(user);   
-        
+        setCurrentUser(user);
       } catch (error) {
         console.error('Failed to fetch current user:', error);
       }
@@ -41,7 +40,7 @@ const Navbar = () => {
     fetchCurrentUser();
     
     // console.log('window.location.pathname: ', window.location.pathname);
-    // console.log('currentPath: ', currentPath);
+    // console.log('Navbar_status: ', status);
 
     // 만약 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉트합니다.
     // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지가 아닌 경우 로그인 페이지로 리다이렉트

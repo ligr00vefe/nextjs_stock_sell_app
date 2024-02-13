@@ -15,13 +15,13 @@ export interface IStocksParams {
 export interface FavoritesData {
   data: Favorite[] | null;
   currentUser: User | null;
-  totalItems: number
+  totalItems: number;
 }
 
 export default async function getFavorites(): Promise<FavoritesData> {
 
   const currentUser = await getCurrentUser();
-  console.log('favorites_currentUser', currentUser);
+  // console.log('favorites_currentUser', currentUser);
   
   try {
      
@@ -30,6 +30,7 @@ export default async function getFavorites(): Promise<FavoritesData> {
     if (currentUser?.id) {
       // 현재 사용자의 ID로 favorite 테이블에서 해당 사용자의 데이터만 가져옵니다.
       query.userId = currentUser.id;
+      // console.log('query', query);
     }
 
     if (currentUser?.favoriteIds) {
@@ -42,6 +43,7 @@ export default async function getFavorites(): Promise<FavoritesData> {
       if (user) {
         query.stockId = { in: user.favoriteIds };
       }
+      // console.log('query', query);
     }
 
     // 테이블의 데이터를 여러개 가져올 때 findMany() 사용    
