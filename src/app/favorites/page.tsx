@@ -4,21 +4,26 @@ import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Favorite, User } from '@prisma/client';
+import { Favorite } from '@prisma/client';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 const FavoritesPage = () => {
 
   const [stocks, setStocks] = useState<Favorite[] | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
 
   useEffect(() => {  
     const fetchData = async () => {
       try {            
-        const response = await axios.get('/api/favorites'); // GET 요청을 보냅니다.
-        const { data, currentSession } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        const currentSession = await getSession();
+        // console.log('favorites_currentSession', currentSession);
+
+        const response = await axios.get('/api/favorites', { params: currentSession }); // GET 요청을 보냅니다.
+        const { data } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
         console.log('response: ', response);
         console.log('data: ', data);

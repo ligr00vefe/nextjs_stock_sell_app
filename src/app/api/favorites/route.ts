@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
-import { getSession } from "@/app/actions/getCurrentUser";
+import { Session } from "next-auth";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
-export async function GET() {
+export async function GET(params: Session) {
   try {
-    const currentSession = await getSession();
-    console.log('favorites_currentSession', currentSession);
+    const currentSession = params;
     
     let query: any = {};
     
