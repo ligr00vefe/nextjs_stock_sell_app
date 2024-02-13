@@ -24,11 +24,8 @@ const StocksPage = () => {
 
         // console.log('response: ', response);
         // console.log('data: ', data);
-        // console.log('currentUser: ', currentUser);
-
         setStocks(data);
         setCurrentUser(currentUser);
-        
       } catch (err) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
         console.error(err);
@@ -39,6 +36,8 @@ const StocksPage = () => {
 
     fetchData();
   }, []);
+
+  console.log('StocksPage_currentUser: ', currentUser);
 
   if (isLoading) {
     return <div>로딩 중...</div>; // 로딩 인디케이터 추가

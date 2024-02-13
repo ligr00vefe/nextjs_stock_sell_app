@@ -6,7 +6,6 @@ import EmptyState from '@/components/EmptyState';
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Favorite, User } from '@prisma/client';
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
 
 const FavoritesPage = () => {
 
@@ -18,9 +17,6 @@ const FavoritesPage = () => {
   useEffect(() => {  
     const fetchData = async () => {
       try {            
-        const currentSession = await getSession();
-        console.log('currentSession: ', currentSession);
-
         const response = await axios.get('/api/favorites'); // GET 요청을 보냅니다.
         const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   

@@ -8,12 +8,15 @@ export interface StocksData {
   totalItems: number;
 }
 
-export default async function getStocks(currentUser: User | null): Promise<StocksData> {
+export default async function getStocks(): Promise<StocksData> {
+
+  const currentUser = await getCurrentUser();
+  // console.log('getStock_currentUser_resultData: ', currentUser);
 
   try {
    
-    let query: any = {};  
-    
+    let query: any = {};      
+
     // 테이블의 데이터를 여러개 가져올 때 findMany() 사용    
     const stocks = await prisma.stock.findMany({
       where: query,
