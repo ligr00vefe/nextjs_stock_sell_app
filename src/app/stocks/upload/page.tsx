@@ -128,7 +128,7 @@ const StockUploadPage = () => {
 
           <hr />
 
-          <Input 
+          {/* <Input 
             id="desired_selling_price"
             label="희망매도가"
             formatPrice
@@ -138,7 +138,7 @@ const StockUploadPage = () => {
             errors={errors}
           />
 
-          <hr />
+          <hr /> */}
 
           <Button label="등록하기" />
 

@@ -41,7 +41,7 @@ const Home = () => {
       <div className='flex items-center'>
         <input
           type="text"
-          placeholder="종목코드를 입력하세요"
+          placeholder="영어로 검색해주세요"
           value={searchTerm}
           onChange={handleChange}
           className="bg-transparent/50 rounded text-base text-black bg-white p-2 border-[1px] border-[#CD93D7] focus:outline-0"
