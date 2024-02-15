@@ -140,6 +140,12 @@ const SearchPage: React.FC = () => {
     <div className='flex items-start justify-center w-full h-full py-20'>
       {searchResults.length > 0 ? (
         <table className="w-[70vw] max-w-[1000px] border-2 border-black border-collapse border-spacing-0 p-10">
+           <colgroup>
+            <col className='w-[15%]'/>
+            <col className=''/>
+            <col className='w-[10%]'/>
+            <col className='w-[13%]'/>
+          </colgroup>
           <thead>
             <tr>
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목코드</th>
@@ -154,7 +160,7 @@ const SearchPage: React.FC = () => {
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.symbol}</td>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.name}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>{stock.currency}</td>
-                <td className='px-5 py-2 border-[1px] border-black text-center'>
+                <td className='px-5 py-2 border-[1px] border-black text-center min-w-[130px]'>
                   {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                     <Button 
                       variant="contained" 
