@@ -12,6 +12,7 @@ import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import getCurrentUser from '../actions/getCurrentUser';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -40,8 +41,33 @@ const SearchPage: React.FC = () => {
       userId: '',
       desired_selling_price: 0,
     }
-  });
+  });  
 
+  // 검색된 데이터 불러오기
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search).get('q');
+    setSearchTerm(query || '');
+  }, []);
+
+  useEffect(() => {
+    const fetchAndSetData = async () => {
+      if (searchTerm !== '') {
+        try {
+          const results = await fetchStockData(searchTerm);
+          if (results) {
+            setSearchResults(results);
+          }
+        } catch (error) {
+          console.error('Error fetching stock data:', error);
+        }
+      }
+    };
+
+    fetchAndSetData();
+  }, [searchTerm]);
+
+  
+  // 등록버튼으로 관심종목을 바로 등록할 때 사용.
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
 
@@ -65,27 +91,50 @@ const SearchPage: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search).get('q');
-    setSearchTerm(query || '');
-  }, []);
 
-  useEffect(() => {
-    const fetchAndSetData = async () => {
-      if (searchTerm !== '') {
-        try {
-          const results = await fetchStockData(searchTerm);
-          if (results) {
-            setSearchResults(results);
-          }
-        } catch (error) {
-          console.error('Error fetching stock data:', error);
-        }
+  // 등록버튼으로 price값을 구하는 api로 전달할 때 사용.
+  async function handleRegisterButtonClick(
+    symbol:string, 
+    company:string, 
+    currency:string
+  ) {
+    // console.log('symbol:', symbol);
+    // console.log('company:', company);
+    // console.log('currency:', currency);
+    // API 요청 주소 구성  
+    try {
+      // AlphaVantage API를 호출하는 서버측 API에 요청
+      const response = await axios.get(`/api/search?symbol=${encodeURIComponent(symbol)}&currency=${encodeURIComponent(currency)}`);
+      const data = response.data;
+  
+      // console.log('response: ', response);
+      // console.log('data: ', data);
+      // console.log('data.price: ', data.price);
+
+      // 성공적으로 데이터를 받아온 경우, StockUploadPage로 리다이렉트
+      if (data.price) {
+        const queryParams = new URLSearchParams({
+          symbol,
+          company,
+          currency,
+          price: data.price,
+        }).toString();
+  
+        router.push(`/stocks/upload?${queryParams}`);
+      } else {
+        const queryParams = new URLSearchParams({
+          symbol,
+          company,
+          currency,
+          price: '0',
+        }).toString();
+
+        router.push(`/stocks/upload?${queryParams}`);
       }
-    };
-
-    fetchAndSetData();
-  }, [searchTerm]);
+    } catch (error) {
+      console.error('Error fetching current price', error);
+    }
+  }
 
   return (
     <div className='flex items-start justify-center w-full h-full py-20'>
@@ -101,29 +150,37 @@ const SearchPage: React.FC = () => {
           </thead>
           <tbody>
             {searchResults.map((stock) => (
-              <tr key={stock.id}>
+              <tr key={stock.symbol}>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.symbol}</td>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.name}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>{stock.currency}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>
-                  <form onSubmit={handleSubmit(onSubmit)}>
+                  {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                     <Button 
-                      type="submit" 
                       variant="contained" 
                       color="primary" 
                       startIcon={<AddBoxIcon />}
                       className="bg-blue-500"
-                      onClick={() => {
-                        setSelectedStock({
-                          symbol: stock.symbol,
-                          company: stock.name,
-                          currency: stock.currency,
-                        });
-                      }}
+
+                      // 등록버튼으로 관심종목으로 바로 등록
+                      // onClick={() => {
+                      //   setSelectedStock({
+                      //     symbol: stock.symbol,
+                      //     company: stock.name,
+                      //     currency: stock.currency,
+                      //   });
+                      // }}
+
+                      // 파라미터로 symbol, company, currency값만 전달
+                      // component={Link}
+                      // href={`/stocks/upload?symbol=${stock.symbol}&company=${stock.name}&currency=${stock.currency}`}
+                    
+                      // 
+                      onClick={() => {handleRegisterButtonClick(stock.symbol, stock.name, stock.currency)}}
                     >
                       등록
                     </Button>
-                  </form>                  
+                  {/* </form>                   */}
                 </td>
               </tr>
             ))}

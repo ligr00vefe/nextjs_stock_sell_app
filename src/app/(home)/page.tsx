@@ -28,13 +28,13 @@ const Home = () => {
   return (
     <main className='w-full h-[calc(100vh-75px)] flex flex-col items-center justify-center -my-[5%]'>
       <div className='flex flex-col items-center pb-[70px]'>
-        <h1>[작업중입니다.]</h1>
+        {/* <h1>[작업중입니다.]</h1> */}
         <h2 className='pb-5 text-2xl font-semibold'>종목을 검색해 주세요.</h2>
         <p className='text-sm'>
           예시)
           애플: AAPL,
           넷플릭스: NFLX,
-          삼성전자: 005930
+          쿠팡: CPNG
         </p>
       </div>
       

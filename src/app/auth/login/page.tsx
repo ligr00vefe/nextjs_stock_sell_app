@@ -47,11 +47,15 @@ const LoginPage = () => {
   }
 
   return (
-    <section className='grid h-[calc(100vh_-_56px)] place-items-center'>
+    <section className='grid h-[calc(100vh_-_56px)] place-items-center'>      
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col justify-center gap-4 min-w-[350px]'
       >
+        <div>
+          <h3>테스트 계정</h3>
+          <p>stock_tester@test.com / 1234</p>
+        </div> 
         <h1 className='text-2xl'>로그인</h1>
         
         <Input

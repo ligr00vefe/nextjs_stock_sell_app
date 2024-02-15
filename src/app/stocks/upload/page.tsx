@@ -5,12 +5,12 @@ import Heading from '@/components/Heading';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-const ProductUploadPage = () => {
+const StockUploadPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();  
@@ -25,16 +25,22 @@ const ProductUploadPage = () => {
       errors,
     },
     reset,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      symbol: '',
-      company: '',
-      currency: '',
-      price: 0,
-      userId: '',
-      desired_selling_price: 0,
+  } = useForm<FieldValues>();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const queryParams = new URLSearchParams(window.location.search);
+      const symbol = queryParams.get('symbol');
+      const company = queryParams.get('company');
+      const currency = queryParams.get('currency');
+      const price = queryParams.get('price');
+
+      if (symbol) setValue('symbol', symbol);
+      if (company) setValue('company', company);
+      if (currency) setValue('currency', currency);
+      if (price) setValue('price', price);
     }
-  });
+  }, [setValue]);
 
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -142,4 +148,4 @@ const ProductUploadPage = () => {
   )
 }
 
-export default ProductUploadPage
+export default StockUploadPage

@@ -37,7 +37,7 @@ const StocksPage = () => {
     fetchData();
   }, []);
 
-  console.log('StocksPage_currentUser: ', currentUser);
+  // console.log('StocksPage_currentUser: ', currentUser);
 
   if (isLoading) {
     return <div>로딩 중...</div>; // 로딩 인디케이터 추가
