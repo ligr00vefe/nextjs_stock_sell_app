@@ -101,7 +101,7 @@ const StockTableRow = ({
       <td className='px-5 py-2 border-[1px] border-black'><span>{stock.company}</span></td>
       <td className='px-5 py-2 border-[1px] border-black text-center'><span>{stock.currency}</span></td>
       {hasPrice &&
-        <td className='px-5 py-2 border-[1px] border-black text-right'><span>{stock.price != null ? stock.price.toLocaleString("en-US")+'원' : ''}</span></td>
+        <td className='px-5 py-2 border-[1px] border-black text-right min-w-[140px]'><span>{stock.price != null ? stock.price.toLocaleString("en-US")+'원' : ''}</span></td>
       }    
       {hasSellingPrice && 
         <td className={`px-5 py-2 border-[1px] border-black text-right ${readonly ? '': 'min-w-[305px]'}`}>

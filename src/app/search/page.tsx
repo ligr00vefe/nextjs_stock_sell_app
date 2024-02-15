@@ -10,13 +10,11 @@ import { useRouter } from 'next/navigation';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
-import getCurrentUser from '../actions/getCurrentUser';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,7 +56,9 @@ const SearchPage: React.FC = () => {
             setSearchResults(results);
           }
         } catch (error) {
-          console.error('Error fetching stock data:', error);
+          setError('데이터를 불러오는 중 오류가 발생했습니다.');
+        }finally {
+          setIsLoading(false);
         }
       }
     };
@@ -134,6 +134,14 @@ const SearchPage: React.FC = () => {
     } catch (error) {
       console.error('Error fetching current price', error);
     }
+  }
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>오류: {error}</div>; // 에러 메시지 표시
   }
 
   return (

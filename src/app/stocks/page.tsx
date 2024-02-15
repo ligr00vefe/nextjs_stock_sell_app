@@ -75,7 +75,7 @@ const StocksPage = () => {
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목코드</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목명</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>통화</th>
-              <th className='p-2 border-[1px] border-black bg-blue-100'>현재가</th>
+              <th className='p-2 border-[1px] border-black bg-blue-100'>현재가(KRW/원)</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>즐겨찾기</th>
             </tr>           
           </thead>

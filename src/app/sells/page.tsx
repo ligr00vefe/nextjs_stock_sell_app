@@ -20,9 +20,9 @@ const SellsPage = () => {
         const response = await axios.get('/api/sells'); // GET 요청을 보냅니다.
         const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
 
-        console.log('response: ', response);
-        console.log('data: ', data);
-        console.log('currentUser: ', currentUser);
+        // console.log('response: ', response);
+        // console.log('data: ', data);
+        // console.log('currentUser: ', currentUser);
 
         setStocks(data);
         setCurrentUser(currentUser);
@@ -71,7 +71,7 @@ const SellsPage = () => {
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목코드</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>종목명</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>통화</th>
-              <th className='p-2 border-[1px] border-black bg-blue-100'>현재가</th>
+              <th className='p-2 border-[1px] border-black bg-blue-100'>현재가(KRW/원)</th>
               <th className='p-2 border-[1px] border-black bg-blue-100'>희망매도가</th>
             </tr>           
           </thead>
