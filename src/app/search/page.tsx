@@ -12,18 +12,18 @@ import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 
 const SearchPage: React.FC = () => {
-  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
   const [selectedStock, setSelectedStock] = useState<any>({
     symbol: '',
     company: '',
     currency: '',
   });
+  const [symbolExistsMap, setSymbolExistsMap] = useState<Record<string, boolean>>({}); // 종목 존재 여부를 저장하는 객체
 
   const {
     register,
@@ -55,6 +55,7 @@ const SearchPage: React.FC = () => {
           if (results) {
             setSearchResults(results);
           }
+          // console.log('results: ', results);
         } catch (error) {
           setError('데이터를 불러오는 중 오류가 발생했습니다.');
         }finally {
@@ -65,7 +66,7 @@ const SearchPage: React.FC = () => {
 
     fetchAndSetData();
   }, [searchTerm]);
-
+  
   
   // 등록버튼으로 관심종목을 바로 등록할 때 사용.
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -135,7 +136,35 @@ const SearchPage: React.FC = () => {
       console.error('Error fetching current price', error);
     }
   }
+
+  // 등록 버튼에서 이미 등록된 종목인지 체크
+  useEffect(() => {
+    const fetchSymbolExists = async () => {
+      const symbols = searchResults.map(stock => stock.symbol); // 모든 검색 결과에서 symbol만 추출
+
+      try {
+        const responses = await Promise.all( // 모든 symbol에 대해 동시에 API 호출
+          symbols.map(symbol => axios.get(`/api/check/symbol?symbol=${symbol}`))
+        );
+
+        const symbolExists = responses.reduce((acc, response, index) => { // API 응답을 기반으로 symbol 존재 여부 객체 생성
+          const symbol = symbols[index];
+          acc[symbol] = response.data.exists;
+          return acc;
+        }, {} as Record<string, boolean>);
+
+        setSymbolExistsMap(symbolExists); // 상태 업데이트
+      } catch (error) {
+        console.error('Error checking symbol existence:', error);
+        setSymbolExistsMap({}); // 에러 발생 시 초기화
+      }
+
+    };
+
+    fetchSymbolExists();
+  }, [searchResults]); // 검색 결과가 변경될 때마다 실행
   
+  console.log('symbolExistsMap: ', symbolExistsMap);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -163,38 +192,42 @@ const SearchPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {searchResults.map((stock) => (
+            {searchResults
+            .map((stock) => (
               <tr key={stock.symbol}>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.symbol}</td>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.name}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>{stock.currency}</td>
-                <td className='px-5 py-2 border-[1px] border-black text-center min-w-[130px]'>
-                  {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      startIcon={<AddBoxIcon />}
-                      className="bg-blue-500"
+                <td className='px-5 py-2 border-[1px] border-black text-center min-w-[130px]'>                 
+                {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                  <Button 
+                    variant="contained" 
+                    color="primary" 
+                    startIcon={symbolExistsMap[stock.symbol] ? '' : <AddBoxIcon />}
+                    className="bg-blue-500"
 
-                      // 등록버튼으로 관심종목으로 바로 등록
-                      // onClick={() => {
-                      //   setSelectedStock({
-                      //     symbol: stock.symbol,
-                      //     company: stock.name,
-                      //     currency: stock.currency,
-                      //   });
-                      // }}
+                    // 등록버튼으로 관심종목으로 바로 등록
+                    // onClick={() => {
+                    //   setSelectedStock({
+                    //     symbol: stock.symbol,
+                    //     company: stock.name,
+                    //     currency: stock.currency,
+                    //   });
+                    // }}
 
-                      // 파라미터로 symbol, company, currency값만 전달
-                      // component={Link}
-                      // href={`/stocks/upload?symbol=${stock.symbol}&company=${stock.name}&currency=${stock.currency}`}
-                    
-                      // 
-                      onClick={() => {handleRegisterButtonClick(stock.symbol, stock.name, stock.currency)}}
-                    >
-                      등록
-                    </Button>
-                  {/* </form>                   */}
+                    // 파라미터로 symbol, company, currency값만 전달
+                    // component={Link}
+                    // href={`/stocks/upload?symbol=${stock.symbol}&company=${stock.name}&currency=${stock.currency}`}
+                  
+                    // symnbol과 currency 값을 가지고 price 값을 구하여 관심종목 등록 페이지로 이동
+                    onClick={() => {handleRegisterButtonClick(stock.symbol, stock.name, stock.currency)}}
+                  
+                    // 이미 등록된 종목인지 체크
+                    disabled={symbolExistsMap[stock.symbol]}
+                  >
+                    {symbolExistsMap[stock.symbol] ? '등록됨' : '등록'}
+                  </Button>
+                {/* </form> */}
                 </td>
               </tr>
             ))}

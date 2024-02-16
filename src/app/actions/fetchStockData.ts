@@ -4,7 +4,7 @@
 const fetchStockData = async (searchTerm: string) => {
   try {
     if (searchTerm) {    
-      const apiKey = process.env.ALPHAVANTAGE_API_KEY;
+      const apiKey = 'C5IGY3WO69BA3AOJ';
       const apiUrl = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${encodeURIComponent(
         searchTerm
       )}&apikey=${apiKey}`;
@@ -16,7 +16,8 @@ const fetchStockData = async (searchTerm: string) => {
       // console.log('data.Information: ', data.Information);
 
       if (data.bestMatches && Array.isArray(data.bestMatches)) {
-        const results = data.bestMatches.map((match: any) => ({
+        const results = data.bestMatches
+        .map((match: any) => ({
           symbol: match['1. symbol'],
           name: match['2. name'],
           type: match['3. type'],

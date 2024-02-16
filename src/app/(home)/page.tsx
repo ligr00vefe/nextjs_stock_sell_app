@@ -27,14 +27,16 @@ const Home = () => {
 
   return (
     <main className='w-full h-[calc(100vh-75px)] flex flex-col items-center justify-center -my-[5%]'>
-      <div className='flex flex-col items-center pb-[70px]'>
+      <div className='flex flex-col items-center pb-1'>
         {/* <h1>[작업중입니다.]</h1> */}
-        <h2 className='pb-5 text-2xl font-semibold'>종목을 검색해 주세요.</h2>
+        <h2 className='pb-1 text-2xl font-semibold'>종목을 검색해 주세요.</h2>
+        <h5 className='pb-11 text-sm'>(나스닥에 상장된 주식만 검색이 가능합니다.)</h5>
+
         <p className='text-sm'>
           예시)
-          애플: AAPL,
-          넷플릭스: NFLX,
-          쿠팡: CPNG
+          애플: apple,
+          넷플릭스: netflix,
+          쿠팡: coupang
         </p>
       </div>
       
