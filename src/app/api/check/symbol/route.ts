@@ -20,6 +20,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ exists: stockExists });
   } catch (error) {
-    return NextResponse.json({ error: `Failed to fetch symbol: ${error.message}` });
+    return NextResponse.json({ error: `Failed to fetch symbol: ${(error as Error).message}` });
   }
 }
