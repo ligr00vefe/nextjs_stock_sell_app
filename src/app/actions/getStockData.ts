@@ -46,7 +46,7 @@ const fetchStockData = async (searchTerm: string) => {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 429) {
-        return { error: "API의 하루 응답 횟수를 초과했습니다. 내일 다시 시도해주세요." };
+        return { error: "API 호출 횟수를 초과했습니다. 내일 다시 시도해주세요." };
       }
     }
     return { error: "데이터를 불러오는 중 오류가 발생했습니다." };
