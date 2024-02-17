@@ -54,8 +54,11 @@ const SearchPage: React.FC = () => {
         try {
           const results = await fetchStockData(searchTerm);
           console.log('results: ', results);
-          
-          if (results) {
+          if ('error' in results) {
+            // error 프로퍼티가 있는 경우, 즉 에러가 발생한 경우
+            setError(results.error);  // 에러 메시지 설정
+            setSearchResults([]);   
+          }else {
             setSearchResults(results);
 
             // 등록 버튼에서 이미 등록된 종목인지 체크

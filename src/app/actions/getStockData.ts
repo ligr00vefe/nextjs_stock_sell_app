@@ -1,6 +1,6 @@
 'use client'
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const fetchStockData = async (searchTerm: string) => {
   try {
@@ -42,7 +42,14 @@ const fetchStockData = async (searchTerm: string) => {
       return { error : 'Financial Modeling Prep에서 데이터를 찾을 수 없음' };
     }
   } catch (error) {
-    return { error : `Error fetching data from Financial Modeling Prep: ${error}` };
+    // 에러 처리
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 429) {
+        return { error: "API의 하루 응답 횟수를 초과했습니다. 내일 다시 시도해주세요." };
+      }
+    }
+    return { error: "데이터를 불러오는 중 오류가 발생했습니다." };
   }
 }
 
