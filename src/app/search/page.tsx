@@ -53,6 +53,8 @@ const SearchPage: React.FC = () => {
       if (searchTerm !== '') {
         try {
           const results = await fetchStockData(searchTerm);
+          console.log('results: ', results);
+          
           if (results) {
             setSearchResults(results);
 

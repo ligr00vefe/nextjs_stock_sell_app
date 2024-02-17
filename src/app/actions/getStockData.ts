@@ -16,7 +16,8 @@ const fetchStockData = async (searchTerm: string) => {
     const response = await axios.get(apiUrl);
     const data = response.data;
     
-    // console.log('data: ', data);
+    console.log('response: ', response);
+    console.log('data: ', data);
 
     // // API 응답에서 필요한 정보 추출하여 업데이트
     // if (data && Array.isArray(data)) {
@@ -38,10 +39,10 @@ const fetchStockData = async (searchTerm: string) => {
     if (filteredData.length) {
       return filteredData;
     } else {
-      console.error('Financial Modeling Prep에서 데이터를 찾을 수 없음');
+      return { error : 'Financial Modeling Prep에서 데이터를 찾을 수 없음' };
     }
   } catch (error) {
-    console.error('Error fetching data from Financial Modeling Prep:', error);
+    return { error : `Error fetching data from Financial Modeling Prep: ${error}` };
   }
 }
 

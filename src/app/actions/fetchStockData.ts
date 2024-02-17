@@ -26,11 +26,11 @@ const fetchStockData = async (searchTerm: string) => {
 
         return results;
       } else {
-        console.error('Alpha Vantage에서 데이터를 가져오는 중 오류 발생: 잘못된 데이터 형식');
+        return { error : 'Alpha Vantage에서 데이터를 가져오는 중 오류 발생: 잘못된 데이터 형식' };
       }
     }
   } catch (error) {
-    console.error('Error fetching data from Alpha Vantage:', error);
+    return { error: `Error fetching data from Alpha Vantage: ${error} `};
   }
 };
 
