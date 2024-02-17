@@ -25,6 +25,13 @@ const Home = () => {
     // console.log('e.target.value: ', e.target.value);
   };
 
+  // 검색창에 엔터키를 눌렀을 때 주식 검색 api 실행
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+  
   return (
     <main className='w-full h-[calc(100vh-75px)] flex flex-col items-center justify-center -my-[5%]'>
       <div className='flex flex-col items-center pb-1'>
@@ -46,6 +53,7 @@ const Home = () => {
           placeholder="영어로 검색해주세요"
           value={searchTerm}
           onChange={handleChange}
+          onKeyDown={handleKeyDown} // 엔터키 이벤트 리스너 추가
           className="bg-transparent/50 rounded text-base text-black bg-white p-2 border-[1px] border-[#CD93D7] focus:outline-0"
         />
         <Button 
