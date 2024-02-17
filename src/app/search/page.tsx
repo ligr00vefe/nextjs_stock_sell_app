@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
+import { Stock } from '@prisma/client';
 
 const SearchPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,6 +55,27 @@ const SearchPage: React.FC = () => {
           const results = await fetchStockData(searchTerm);
           if (results) {
             setSearchResults(results);
+
+            // 등록 버튼에서 이미 등록된 종목인지 체크
+            // 종목 존재 여부를 미리 가져와서 상태 업데이트
+            const symbols = results.map((stock:Stock) => stock.symbol); // 모든 검색 결과에서 symbol만 추출
+            const symbolExistsMap: Record<string, boolean> = {}; // 존재 여부를 저장할 객체 초기화
+            
+            try {
+              const responses = await Promise.all( // 모든 symbol에 대해 동시에 API 호출
+                symbols.map((symbol:string) => axios.get(`/api/check/symbol?symbol=${symbol}`))
+              );
+
+              responses.forEach((response, index) => { // API 응답을 기반으로 symbol 존재 여부 객체 생성
+                const symbol = symbols[index];
+                symbolExistsMap[symbol] = response.data.exists;
+              });
+
+              setSymbolExistsMap(symbolExistsMap); // 상태 업데이트
+            } catch (error) {
+              console.error('Error checking symbol existence:', error);
+              setSymbolExistsMap({}); // 에러 발생 시 초기화
+            }
           }
           // console.log('results: ', results);
         } catch (error) {
@@ -67,7 +89,7 @@ const SearchPage: React.FC = () => {
     fetchAndSetData();
   }, [searchTerm]);
   
-  
+    
   // 등록버튼으로 관심종목을 바로 등록할 때 사용.
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
@@ -104,6 +126,15 @@ const SearchPage: React.FC = () => {
     // console.log('currency:', currency);
     // API 요청 주소 구성  
     try {
+
+       // 서버에 종목이 이미 등록되었는지 확인하는 요청 보내기
+      const checkExistsResponse = await axios.get(`/api/check/symbol?symbol=${symbol}`);
+      if (checkExistsResponse.data.exists) {
+        toast.error('이미 등록된 종목입니다.');
+        setIsLoading(false);
+        return; // 이미 등록된 경우, 여기서 처리를 중단
+      }
+
       // AlphaVantage API를 호출하는 서버측 API에 요청
       const response = await axios.get(`/api/search?symbol=${encodeURIComponent(symbol)}&currency=${encodeURIComponent(currency)}`);
       const data = response.data;
@@ -135,36 +166,8 @@ const SearchPage: React.FC = () => {
     } catch (error) {
       console.error('Error fetching current price', error);
     }
-  }
+  } 
 
-  // 등록 버튼에서 이미 등록된 종목인지 체크
-  useEffect(() => {
-    const fetchSymbolExists = async () => {
-      const symbols = searchResults.map(stock => stock.symbol); // 모든 검색 결과에서 symbol만 추출
-
-      try {
-        const responses = await Promise.all( // 모든 symbol에 대해 동시에 API 호출
-          symbols.map(symbol => axios.get(`/api/check/symbol?symbol=${symbol}`))
-        );
-
-        const symbolExists = responses.reduce((acc, response, index) => { // API 응답을 기반으로 symbol 존재 여부 객체 생성
-          const symbol = symbols[index];
-          acc[symbol] = response.data.exists;
-          return acc;
-        }, {} as Record<string, boolean>);
-
-        setSymbolExistsMap(symbolExists); // 상태 업데이트
-      } catch (error) {
-        console.error('Error checking symbol existence:', error);
-        setSymbolExistsMap({}); // 에러 발생 시 초기화
-      }
-
-    };
-
-    fetchSymbolExists();
-  }, [searchResults]); // 검색 결과가 변경될 때마다 실행
-  
-  console.log('symbolExistsMap: ', symbolExistsMap);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -198,7 +201,7 @@ const SearchPage: React.FC = () => {
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.symbol}</td>
                 <td className='px-5 py-2 border-[1px] border-black'>{stock.name}</td>
                 <td className='px-5 py-2 border-[1px] border-black text-center'>{stock.currency}</td>
-                <td className='px-5 py-2 border-[1px] border-black text-center min-w-[130px]'>                 
+                <td className={`px-5 py-2 border-[1px] border-black text-center ${symbolExistsMap[stock.symbol] ? 'min-w-[150px]' : 'min-w-[130px]'}`}>                 
                 {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                   <Button 
                     variant="contained" 
@@ -225,7 +228,7 @@ const SearchPage: React.FC = () => {
                     // 이미 등록된 종목인지 체크
                     disabled={symbolExistsMap[stock.symbol]}
                   >
-                    {symbolExistsMap[stock.symbol] ? '등록됨' : '등록'}
+                    {symbolExistsMap[stock.symbol] ? '이미 등록됨' : '등록'}
                   </Button>
                 {/* </form> */}
                 </td>

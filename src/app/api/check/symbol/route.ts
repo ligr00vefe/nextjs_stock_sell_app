@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       }
     });
 
+    // 연산자 !!은 불리언값으로 강제 변환한다. truthy한 값을 true로 falsy(null, undefined 등)값은 false로
     const stockExists = !!existingStock; // Convert to boolean
 
     return NextResponse.json({ exists: stockExists });
