@@ -48,6 +48,6 @@ export async function GET(req: NextRequest) {
     }
 
   } catch (error) {
-    return NextResponse.json({ error: `Failed to fetch current price: ${error.message}` });
+    return NextResponse.json({ error: `Failed to fetch current price: ${(error as Error).message}` });
   }
 }
