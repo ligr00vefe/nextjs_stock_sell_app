@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
-import { getSession } from "@/app/actions/getCurrentUser";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
 export async function GET() {
   try {
-    const currentSession = await getSession();
-    // console.log('favorites_currentSession', currentSession);
+    const currentSession = await getServerSession(authOptions);
+    console.log('favorites_currentSession', currentSession);
     
     let query: any = {};
     
@@ -26,7 +27,7 @@ export async function GET() {
       }
     }
 
-    // console.log('query', query);
+    console.log('query', query);
     const favorites = await prisma.favorite.findMany({
       where: query,
       orderBy: {
@@ -44,7 +45,7 @@ export async function GET() {
       totalItems
     };
 
-    // console.log('favorites_route_resultData: ', resultData);
+    console.log('favorites_route_resultData: ', resultData);
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });
