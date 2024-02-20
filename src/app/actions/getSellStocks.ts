@@ -1,11 +1,11 @@
 import prisma from "@/helpers/prismadb";
 import { FavoritesData } from "@/app/actions/getFavorites";
-import { getSession } from "@/app/actions/getCurrentUser";
+import { getSession } from "next-auth/react";
 
 export default async function getSellStocks(): Promise<FavoritesData> {
 
   const currentSession = await getSession();
-  // console.log('sellStocks_currentSession', currentSession);
+  console.log('sellStocks_currentSession', currentSession);
 
   try {
     
