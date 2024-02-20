@@ -21,8 +21,8 @@ const SellsPage = () => {
         const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
 
         // console.log('response: ', response);
-        // console.log('data: ', data);
-        // console.log('currentUser: ', currentUser);
+        console.log('sells_data: ', data);
+        console.log('sells_currentUser: ', currentUser);
 
         setStocks(data);
         setCurrentUser(currentUser);

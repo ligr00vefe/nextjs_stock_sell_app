@@ -21,7 +21,8 @@ const FavoritesPage = () => {
         const { data, currentSession } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
         // console.log('response: ', response);
-        // console.log('data: ', data);
+        console.log('favorites_data: ', data);
+        console.log('favorites_currentSession: ', currentSession);
 
         setStocks(data);
         setCurrentUser(currentSession);
@@ -37,7 +38,7 @@ const FavoritesPage = () => {
     fetchData();
   }, []);
 
-  // console.log('FavoritesPage_currentSession: ', currentUser);
+  console.log('FavoritesPage_currentSession: ', currentUser);
 
   if (isLoading) {
     return <div>Loading...</div>;
