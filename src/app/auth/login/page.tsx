@@ -54,7 +54,8 @@ const LoginPage = () => {
       >
         <div>
           <h3>테스트 계정</h3>
-          <p>stock_tester@test.com / 1234</p>
+          <p>tester001@testmail.com / 1234</p>
+          <p>tester002@testmail.com / 1234</p>
         </div> 
         <h1 className='text-2xl'>로그인</h1>
         

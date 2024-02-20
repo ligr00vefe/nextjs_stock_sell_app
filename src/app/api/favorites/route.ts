@@ -1,23 +1,23 @@
 import { NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import { getSession } from "@/app/actions/getCurrentUser";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
 export async function GET() {
   try {
-    const currentUser = await getCurrentUser();
-    // console.log('favorites_currentUser', currentUser);
+    const currentSession = await getSession();
+    // console.log('favorites_currentSession', currentSession);
     
     let query: any = {};
     
-    if (currentUser?.id) {
-      query.userId = currentUser.id;
+    if (currentSession?.user?.id) {
+      query.userId = currentSession.user.id;
     }
 
-    if (currentUser?.favoriteIds) {
+    if (currentSession?.user?.favoriteIds) {
       const user = await prisma.user.findUnique({
-        where: { id: currentUser.id },
+        where: { id: currentSession.user.id },
         select: { favoriteIds: true }
       });
 
@@ -26,7 +26,7 @@ export async function GET() {
       }
     }
 
-    console.log('query', query);
+    // console.log('query', query);
     const favorites = await prisma.favorite.findMany({
       where: query,
       orderBy: {
@@ -40,11 +40,11 @@ export async function GET() {
 
     const resultData = {
       data: favorites,
-      currentUser,
+      currentSession,
       totalItems
     };
 
-    console.log('favorites_route_resultData: ', resultData);
+    // console.log('favorites_route_resultData: ', resultData);
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });
