@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   jwt: {    
-    secret: process.env.JWT_SECRET,
+    secret: 'aa92d206c7e0eb77fce7d08ec09a82fa3ebd2b874ceb4a8b842791ef385274ae',
     // 유효기간(30 days) = 30 * 24 * 60 * 60
     // 유효기간(1 days) = 24 * 60 * 60
     // 유효기간(1 hour) = 60 * 60
