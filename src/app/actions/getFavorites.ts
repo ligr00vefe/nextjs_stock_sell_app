@@ -1,7 +1,8 @@
 import prisma from "@/helpers/prismadb";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Favorite } from "@prisma/client";
-import { Session } from "next-auth";
-import { getSession } from "@/app/actions/getCurrentUser";
+import { Session, getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 
 export interface IStocksParams {
   symbol?: string;
@@ -21,7 +22,7 @@ export interface FavoritesData {
 
 export default async function getFavorites(): Promise<FavoritesData> {
 
-  const currentSession = await getSession();
+  const currentSession = await getServerSession(authOptions);
   console.log('favorites_currentSession', currentSession);
   
   try {
