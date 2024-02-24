@@ -1,23 +1,24 @@
 import { NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
 import { getSession } from "next-auth/react";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
 export async function GET() {
   try {
-    const currentSession = await getSession();
-    console.log('favorites_currentSession', currentSession);
+    const currentUser = await getCurrentUser();
+    console.log('favorites_currentUser', currentUser);
     
     let query: any = {};
     
-    if (currentSession?.user?.id) {
-      query.userId = currentSession.user.id;
+    if (currentUser?.id) {
+      query.userId = currentUser.id;
     }
 
-    if (currentSession?.user?.favoriteIds) {
+    if (currentUser?.favoriteIds) {
       const user = await prisma.user.findUnique({
-        where: { id: currentSession.user.id },
+        where: { id: currentUser.id },
         select: { favoriteIds: true }
       });
 
@@ -40,7 +41,7 @@ export async function GET() {
 
     const resultData = {
       data: favorites,
-      currentSession,
+      currentUser,
       totalItems
     };
 

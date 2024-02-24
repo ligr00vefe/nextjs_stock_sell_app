@@ -17,18 +17,15 @@ const FavoritesPage = () => {
   useEffect(() => {  
     const fetchData = async () => {
       try {            
-        const response = await fetch('/api/favorites', {
-          method: 'GET',
-          cache: 'no-cache'
-        }); // GET 요청을 보냅니다.
-        const data = await response.json(); // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        const response = await axios.get('/api/favorites'); // GET 요청을 보냅니다.
+        const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
         // console.log('response: ', response);
         console.log('favorites_data: ', data);
-        // console.log('favorites_currentSession: ', currentSession);
+        console.log('favorites_currentUser: ', currentUser);
 
-        // setStocks(data);
-        // setCurrentUser(currentSession);
+        setStocks(data);
+        setCurrentUser(currentUser);
           
       } catch (error) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
@@ -41,7 +38,7 @@ const FavoritesPage = () => {
     fetchData();
   }, []);
 
-  console.log('FavoritesPage_currentSession: ', currentUser);
+  console.log('FavoritesPage_currentUser: ', currentUser);
 
   if (isLoading) {
     return <div>Loading...</div>;
