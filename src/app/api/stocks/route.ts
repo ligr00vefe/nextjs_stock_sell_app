@@ -1,10 +1,10 @@
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getStocks from '@/app/actions/getStocks';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // GET 요청 처리
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
     // 데이터 가져오기
     const resultData = await getStocks();
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(
-  request: NextRequest
+  request: Request
 ) {
 
   const currentUser = await getCurrentUser();

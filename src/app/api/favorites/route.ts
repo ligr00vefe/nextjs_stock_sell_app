@@ -1,17 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-interface IParams {
-  userId?: string;
-}
-
 // GET 요청 핸들러
-export async function GET(request: NextRequest) {
-  try {    
+export async function GET(request: Request) {
     const currentUser = await getCurrentUser();
-    console.log('favorites_currentUser', currentUser);
-  
+    console.log('favorites_currentUser', currentUser);  
     
     let query: any = {};
 
@@ -54,9 +48,4 @@ export async function GET(request: NextRequest) {
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });
-  } catch (error) {
-    // 오류 처리
-    console.error('Error fetching favorites:', error);
-    return NextResponse.json({ error: 'Error fetching favorites' });
-  }
 }
