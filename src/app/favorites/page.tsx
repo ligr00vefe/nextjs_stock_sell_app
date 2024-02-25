@@ -6,10 +6,7 @@ export default async function FavoritesPage() {
       const currentUser = await getCurrentUser();
       console.log('favoritesPage_currentUser', currentUser);
   return (
-    <>
-      <div>{currentUser!.id}</div>
-      <div>{currentUser!.name}</div>
-    </>    
+    <div>favoritesPage</div>    
   )
   
 }
