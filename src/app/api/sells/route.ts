@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import prisma from "@/helpers/prismadb";
 
 // GET 요청 처리
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     // 데이터 가져오기
     let query: any = {};
@@ -12,8 +12,7 @@ export async function GET(request: NextRequest) {
     // console.log('session: ', session);
     // session.user에 email이 없을 경우
     if (!session?.user?.email) {
-      // console.log('1');
-      return null;
+      return NextResponse.json({ error: 'Invalid session or user email' });
     }
     // console.log('session.user.email: ', session.user.email);
 
@@ -23,10 +22,9 @@ export async function GET(request: NextRequest) {
         email: session.user.email
       }
     });
-    // console.log('getCurrentUser: ', currentUser);
+   
     if (!currentUser) {
-      // console.log('2');
-      return null;
+      return NextResponse.json({ error: 'User not found' });
     }
 
     if (currentUser?.id) {
