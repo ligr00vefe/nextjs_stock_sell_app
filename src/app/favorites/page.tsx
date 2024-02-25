@@ -16,16 +16,20 @@ const FavoritesPage = () => {
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
 
   useEffect(() => {  
+    const currentUser1 = getCurrentUser();
+    console.log('favoritesPage_currentUser1', currentUser1);
+  }, []);
+
+  useEffect(() => {  
     const fetchData = async () => {
       try {            
-        const currentUser1 = await getCurrentUser();
-        console.log('favorites_currentUser', currentUser1);
+        
 
         const response = await axios.get('/api/favorites'); // GET 요청을 보냅니다.
         const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
   
         // console.log('response: ', response);
-        console.log('favorites_data: ', data);
+        console.log('favoritesPage_data: ', data);
         // console.log('currentUser: ', currentUser);
 
         setStocks(data);
