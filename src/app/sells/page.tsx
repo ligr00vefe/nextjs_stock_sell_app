@@ -1,52 +1,14 @@
-'use client'
-
 import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
-
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Favorite, User } from '@prisma/client';
-import axios from 'axios';
+import getSellStocks from '@/app/actions/getSellStocks';
+import { FavoritesData } from '@/app/actions/getFavorites';
 
-const SellsPage = () => {
+const SellsPage = async () => {
 
-  const [stocks, setStocks] = useState<Favorite[] | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
-  const [error, setError] = useState<string | null>(null); // 에러 상태 추가
+  const {data, currentUser}:FavoritesData = await getSellStocks();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/sells'); // GET 요청을 보냅니다.
-        const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
-
-        // console.log('response: ', response);
-        console.log('sells_data: ', data);
-        console.log('sells_currentUser: ', currentUser);
-
-        setStocks(data);
-        setCurrentUser(currentUser);
-
-      } catch (err) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <div>로딩 중...</div>; // 로딩 인디케이터 추가
-  }
-
-  if (error) {
-    return <div>오류: {error}</div>; // 에러 메시지 표시
-  }
-
-  if (!stocks || stocks.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className='flex flex-col items-center justify-start w-full h-full py-[120px]'>
         <EmptyState title="조건에 맞는 매도 종목이 없습니다." subtitle="희망 매도가를 수정해주세요." /> 
@@ -76,7 +38,7 @@ const SellsPage = () => {
             </tr>           
           </thead>
           <tbody>
-            {stocks.map((stock) => (
+            {data.map((stock) => (
               <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly />           
             ))}
           </tbody>          
