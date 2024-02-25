@@ -1,25 +1,25 @@
 import prisma from "@/helpers/prismadb";
 import { FavoritesData } from "@/app/actions/getFavorites";
-import { getSession } from "next-auth/react";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export default async function getSellStocks(): Promise<FavoritesData> {
 
-  const currentSession = await getSession();
-  console.log('sellStocks_currentSession', currentSession);
+  const currentUser = await getCurrentUser();
+  console.log('sellStocks_currentUser', currentUser);
 
   try {
     
     let query: any = {};
          
-    if (currentSession?.user?.id) {
+    if (currentUser?.id) {
       // 현재 사용자의 ID로 favorite 테이블에서 해당 사용자의 데이터만 가져옵니다.
-      query.userId = currentSession.user.id;
+      query.userId = currentUser.id;
     }
 
-    if (currentSession?.user?.favoriteIds) {
+    if (currentUser?.favoriteIds) {
       // 사용자 ID로 사용자의 favoriteIds 필드에 포함된 주식만 가져오도록 수정
       const user = await prisma.user.findUnique({
-        where: { id: currentSession.user.id },
+        where: { id: currentUser.id },
         select: { favoriteIds: true }
       });
 
@@ -50,7 +50,7 @@ export default async function getSellStocks(): Promise<FavoritesData> {
     
     return {
       data: newFavorites,
-      currentSession,
+      currentUser,
       totalItems
     }
 

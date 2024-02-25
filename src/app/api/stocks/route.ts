@@ -6,9 +6,6 @@ import { NextRequest, NextResponse } from 'next/server';
 // GET 요청 처리
 export async function GET(request: NextRequest) {
   try {
-    const currentUser = await getCurrentUser();
-    // console.log('stock_route_currentUser: ', currentUser);
-
     // 데이터 가져오기
     const resultData = await getStocks();
     // console.log('stock_route_resultData: ', resultData);
@@ -25,7 +22,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(
-  request: Request
+  request: NextRequest
 ) {
 
   const currentUser = await getCurrentUser();

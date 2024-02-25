@@ -1,17 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/helpers/prismadb";
 
 interface IParams {
   userId?: string;
 }
 
-// 즐겨찾기 가져오기
-// GET 요청 처리
-export async function GET({ params }: { params: IParams }) {
-  try {
-    const { userId } = params;
-    
-    console.log('favorites_userId', userId);
+// GET 요청 핸들러
+export async function GET(request: NextRequest) {
+  try {    
+    // console.log('favorites_request: ', request);
+
+     // URL 인스턴스 생성
+     const url = new URL(request.url);
+
+     // searchParams에서 'userId' 값을 가져옴
+     const userId = url.searchParams.get('userId');
+ 
+     console.log('favorites_userId: ', userId);
     
     let query: any = {};
 
@@ -45,7 +50,7 @@ export async function GET({ params }: { params: IParams }) {
       totalItems
     };
 
-    console.log('favorites_route_resultData: ', resultData);
+    // console.log('favorites_route_resultData: ', resultData);
 
     // 성공적인 응답 반환
     return NextResponse.json({ resultData });

@@ -6,19 +6,18 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useMemo } from "react";
 import { toast } from 'react-toastify'
 import { IStocksParams } from "@/app/actions/getFavorites";
-import { Session } from "next-auth";
 
 interface IUseFavoriteProps {
   stockId: string;
 
   // 로그인 정보가 없을 경우 null
-  currentSession?: Session | null;
+  currentUser?: User | null;
   stockData: IStocksParams
 }
 
 const useFavorite = ({ 
   stockId, 
-  currentSession,
+  currentUser,
   stockData,
 }: IUseFavoriteProps) => {
 
@@ -26,19 +25,19 @@ const useFavorite = ({
   const hasFavorited = useMemo(() => {
 
     // DB에 favorite 배열이 있으면 불러오고 없으면 빈 배열 출력
-    const list = currentSession?.user?.favoriteIds || [];
+    const list = currentUser?.favoriteIds || [];
 
     // 불러온 favorite 배열에 일치하는 stockId가 있는지 확인
     return list.includes(stockId);
 
-  }, [currentSession, stockId]);
+  }, [currentUser, stockId]);
 
   const toggleFavorite = async (e: ChangeEvent<HTMLInputElement>, checked: boolean) => {
     // event 더블링 방지
     e.stopPropagation();
 
     // 로그인되지 않은 유저는 즐겨찾기 기능이 동작하지 않도록 바로 return 처리
-    if (!currentSession) {
+    if (!currentUser) {
       toast.warn('로그인이 필요합니다.');
       return;
     }

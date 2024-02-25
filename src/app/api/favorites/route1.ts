@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import getFavorites from "@/app/actions/getFavorites";
 
 // 즐겨찾기 가져오기
 // GET 요청 처리
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // 데이터 가져오기
     const resultData = await getFavorites();
