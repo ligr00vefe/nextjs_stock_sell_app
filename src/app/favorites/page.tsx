@@ -16,8 +16,11 @@ const FavoritesPage = () => {
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
 
   useEffect(() => {  
-    const currentUser1 = getCurrentUser();
-    console.log('favoritesPage_currentUser1', currentUser1);
+    const getUser = async () => {
+      const currentUser1 = await getCurrentUser();
+      console.log('favoritesPage_currentUser1', currentUser1);
+    }
+    getUser();
   }, []);
 
   useEffect(() => {  
