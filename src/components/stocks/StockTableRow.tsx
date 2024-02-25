@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react'
-import { Favorite, User } from '@prisma/client';
+import { Favorite } from '@prisma/client';
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -11,10 +11,11 @@ import SwitchBtn from '@/components/stocks/SwitchBtn';
 import { IconButton, Input, TextField } from '@mui/material';
 import SavingsIcon from '@mui/icons-material/Savings';
 import { toast } from 'react-toastify';
+import { Session } from 'next-auth';
 
 interface IStockTableRowProps {
   // 로그인을 하지 않으면 currentUser는 값이 없을 수 있음
-  currentUser?: User | null;
+  currentSession?: Session | null;
   stock: Favorite;
   hasPrice: boolean;
   hasFavorite: boolean;
@@ -24,7 +25,7 @@ interface IStockTableRowProps {
 
 const StockTableRow = ({ 
   stock,
-  currentUser, 
+  currentSession, 
   hasPrice,
   hasFavorite,
   hasSellingPrice,
@@ -137,7 +138,7 @@ const StockTableRow = ({
       }
       {hasFavorite && 
         <td className='px-5 py-2 border-[1px] border-black text-center'>
-          <SwitchBtn stockId={stock.id} currentUser={currentUser} stockData={stock} />
+          <SwitchBtn stockId={stock.id} currentSession={currentSession} stockData={stock} />
         </td>
       }
 

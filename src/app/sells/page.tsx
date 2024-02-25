@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Favorite, User } from '@prisma/client';
+import { Favorite } from '@prisma/client';
 import axios from 'axios';
+import { Session } from 'next-auth';
 
 const SellsPage = () => {
 
   const [stocks, setStocks] = useState<Favorite[] | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentSession, setCurrentSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
 
@@ -18,14 +19,14 @@ const SellsPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/sells'); // GET 요청을 보냅니다.
-        const { data, currentSessions } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        const { data } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
 
         // console.log('response: ', response);
         console.log('sells_data: ', data);
-        console.log('sells_currentSessions: ', currentSessions);
+        // console.log('sells_currentSessions: ', currentSessions);
 
         setStocks(data);
-        setCurrentUser(currentSessions);
+        // setCurrentSession(currentSessions);
 
       } catch (err) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
@@ -77,7 +78,7 @@ const SellsPage = () => {
           </thead>
           <tbody>
             {stocks.map((stock) => (
-              <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly />           
+              <StockTableRow stock={stock} key={stock.id} currentSession={currentSession} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly />           
             ))}
           </tbody>          
         </table>

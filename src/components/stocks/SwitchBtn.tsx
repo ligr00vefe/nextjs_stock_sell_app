@@ -3,26 +3,26 @@
 import { IStocksParams } from '@/app/actions/getFavorites';
 import useFavorite from '@/app/hooks/useFavorite';
 import { Switch, styled } from "@mui/material";
-import { User } from "@prisma/client";
+import { Session } from 'next-auth';
 
 import React from 'react'
 
 interface ISwitchBtnProps {
   stockId: string;
-  currentUser?: User | null;
+  currentSession?: Session | null;
   stockData: IStocksParams
 }
 
-const SwitchBtn = ({ currentUser, stockId, stockData }:ISwitchBtnProps) => {
+const SwitchBtn = ({ currentSession, stockId, stockData }:ISwitchBtnProps) => {
 
   const { hasFavorited, toggleFavorite } = useFavorite({
     stockId,
-    currentUser,
+    currentSession,
     stockData
   });
   // console.log('btn_hasFavorited: ', hasFavorited);
   // console.log('btn_stockId: ', stockId);
-  console.log('btn_currentUser: ', currentUser);
+  console.log('btn_currentUser: ', currentSession);
   // console.log('btn_stockData: ', stockData);
 
   return (

@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import getSellStocks from '@/app/actions/getSellStocks';
 
 // GET 요청 처리
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // 데이터 가져오기
     const resultData = await getSellStocks();

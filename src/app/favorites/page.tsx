@@ -6,34 +6,28 @@ import EmptyState from '@/components/EmptyState';
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Favorite } from '@prisma/client';
 import axios from 'axios';
-import { getSession, useSession } from 'next-auth/react';
-import getCurrentUser from '@/app/actions/getCurrentUser';
+import { getSession} from 'next-auth/react';
 import { Session } from 'next-auth';
 
 const FavoritesPage = () => {
 
   const [stocks, setStocks] = useState<Favorite[] | null>(null);
-  const [currentUser, setCurrentUser] = useState<Session | null>(null);
+  const [currentSession, setCurrentSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
-  // const session = useSession();
-
-  // console.log('session: ', session);
-  // console.log('session_data: ', session.data);
-
 
   useEffect(() => {  
     const fetchData = async () => {
       try {                 
-        const session = await getSession();
-        console.log('favorites_session: ', session);   
+        const currentSession = await getSession();
+        console.log('favorites_currentSession: ', currentSession);   
 
-        if (session) {
-          setCurrentUser(session);
+        if (currentSession) {
+          setCurrentSession(currentSession);
 
-          if (session.user && session.user.id) {
+          if (currentSession.user && currentSession.user.id) {
             const favoritesApi_url = `/api/favorites`;
-            const params = { userId: session.user.id };
+            const params = { userId: currentSession.user.id };
             await axios.get(favoritesApi_url, { params }) // GET 요청을 보냅니다.
             .then((res) => {
               console.log('favorites_data: ', res.data);
@@ -56,7 +50,7 @@ const FavoritesPage = () => {
     fetchData();
   }, []);
 
-  // console.log('FavoritesPage_currentUser: ', currentUser);
+  // console.log('FavoritesPage_currentSession: ', currentSession);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -94,7 +88,7 @@ const FavoritesPage = () => {
           </thead>
           <tbody>
             {stocks.map((stock) => (
-              <StockTableRow stock={stock} key={stock.id} currentUser={currentUser} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly={false} />           
+              <StockTableRow stock={stock} key={stock.id} currentSession={currentSession} hasPrice={true} hasFavorite={false} hasSellingPrice={true} readonly={false} />           
             ))}
           </tbody>          
         </table>
