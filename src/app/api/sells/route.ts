@@ -66,12 +66,14 @@ export async function GET(request: NextRequest) {
       where: query
     });
     
-    return {
+    const resultData = {
       data: newFavorites,
       currentUser,
       totalItems
     }
-    
+
+    // 성공적인 응답 반환
+    return NextResponse.json({ resultData });
   } catch (error) {
     // 오류 처리
     return NextResponse.json({ error: 'Error fetching stocks' });
