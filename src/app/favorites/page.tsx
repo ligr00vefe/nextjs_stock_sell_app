@@ -4,29 +4,47 @@ import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
-import { Favorite, User } from '@prisma/client';
+import { Favorite } from '@prisma/client';
 import axios from 'axios';
+import { getSession, useSession } from 'next-auth/react';
+import getCurrentUser from '@/app/actions/getCurrentUser';
+import { Session } from 'next-auth';
 
 const FavoritesPage = () => {
 
   const [stocks, setStocks] = useState<Favorite[] | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
+  // const session = useSession();
+
+  // console.log('session: ', session);
+  // console.log('session_data: ', session.data);
+
 
   useEffect(() => {  
     const fetchData = async () => {
-      try {            
-        const response = await axios.get('/api/favorites'); // GET 요청을 보냅니다.
-        const { data, currentSeeions } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
-  
-        // console.log('response: ', response);
-        console.log('favorites_data: ', data);
-        console.log('favorites_currentSeeions: ', currentSeeions);
+      try {                 
+        const session = await getSession();
+        console.log('favorites_session: ', session);   
 
-        setStocks(data);
-        setCurrentUser(currentSeeions);
-          
+        if (session) {
+          setCurrentUser(session);
+
+          if (session.user && session.user.id) {
+            const favoritesApi_url = `/api/favorites`;
+            const params = { userId: session.user.id };
+            await axios.get(favoritesApi_url, { params }) // GET 요청을 보냅니다.
+            .then((res) => {
+              console.log('favorites_data: ', res.data);
+              const { data } = res.data.resultData;
+              setStocks(data);
+            }).catch((error) => {
+              console.log('error: ',error);
+            }); 
+        
+          }          
+        }              
       } catch (error) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
         console.error(error);
@@ -38,7 +56,7 @@ const FavoritesPage = () => {
     fetchData();
   }, []);
 
-  console.log('FavoritesPage_currentUser: ', currentUser);
+  // console.log('FavoritesPage_currentUser: ', currentUser);
 
   if (isLoading) {
     return <div>Loading...</div>;
