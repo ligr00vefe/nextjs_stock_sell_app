@@ -5,7 +5,7 @@ import EmptyState from '@/components/EmptyState';
 
 import StockTableRow from '@/components/stocks/StockTableRow';
 import { Favorite, User } from '@prisma/client';
-import getSellStocks from '../actions/getSellStocks';
+import axios from 'axios';
 
 const SellsPage = () => {
 
@@ -17,10 +17,12 @@ const SellsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data, currentUser } = await getSellStocks(); // 응답 데이터에서 stocks와 currentUser를 추출합니다.
+        const response = await axios.get('/api/sells'); // GET 요청을 보냅니다.
+        const { data, currentUser } = response.data.resultData; // 응답 데이터에서 stocks와 currentUser를 추출합니다.
 
+        // console.log('response: ', response);
         console.log('sells_data: ', data);
-        console.log('sells_currentSession: ', currentUser);
+        console.log('sells_currentUser: ', currentUser);
 
         setStocks(data);
         setCurrentUser(currentUser);
